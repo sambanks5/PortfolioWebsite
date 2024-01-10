@@ -236,8 +236,9 @@ module.exports = (function () {
             profit: round(winAmount - totalStake)
         };
     }
-
-    // Expose the calculator interface
-    return calculator;
+    return {
+        calculator: calculator,
+        betTypes: betTypes
+    };
 
 }());
