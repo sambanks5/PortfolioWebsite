@@ -44,6 +44,21 @@ const theme = createTheme({
     },
     // other typography styles...
   },
+  components: {
+    MuiTextField: {
+      styleOverrides: {
+        root: {
+          '& input::-webkit-outer-spin-button, & input::-webkit-inner-spin-button': {
+            '-webkit-appearance': 'none',
+            margin: 0,
+          },
+          '& input[type=number]': {
+            '-moz-appearance': 'textfield',
+          },
+        },
+      },
+    },
+  },
 });
 
 const root = ReactDOM.createRoot(document.getElementById('root'));

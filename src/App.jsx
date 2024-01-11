@@ -1,23 +1,25 @@
 import React, { useState } from 'react';
 import Betslip from './components/betslip';
 import './App.css';
-import { Container, Typography, FormControlLabel, Switch, Box, FormControl, Paper, Grid, Button, TextField, InputLabel, MenuItem, Select } from '@mui/material';
+import { Container, Divider, Typography, FormControlLabel, Switch, Box, FormControl, Paper, Grid, Button, TextField, InputLabel, InputAdornment, MenuItem, Select, Grow } from '@mui/material';
 import { betTypes } from './betcruncher';
 
 function App() {
+  const [betslip, setBetslip] = useState({ stake: null, type: "single", eachWay: false });
   const [stake, setStake] = useState('');
   const [odds, setOdds] = useState([]);
   const [error, setError] = useState(false);
-  const [status, setStatus] = useState([]);
-  const [oddsFormat, setOddsFormat] = useState('decimal');
-  const [eachWay, setEachWay] = useState(false);
-  const [placeTerms, setPlaceTerms] = useState([]);
-  const [betslip, setBetslip] = useState({ stake: null, type: "", eachWay: false });
+  const [oddsFormat, setOddsFormat] = useState('fractional');
+  const [placeTerms, setPlaceTerms] = useState(Array(betslip.selections).fill('1/4'));
+  const [numSelections, setNumSelections] = useState(betTypes[betslip.type]?.selections || 0);
+  const [status, setStatus] = useState(Array(betslip.selections).fill('Won'));
+
 
   const types = Object.keys(betTypes);
 
   const handleTypeChange = (type) => {
     setBetslip({ ...betslip, type });
+    setNumSelections(betTypes[type]?.selections || 0);
   };
 
   const handleStakeChange = (event) => {
@@ -31,19 +33,19 @@ function App() {
     }
   };
 
-  const handleOddsChange = (index, value) => {
-    setOdds(prevOdds => {
-      const newOdds = [...prevOdds];
-      newOdds[index] = value;
-      return newOdds;
-    });
-  };
-
   const handleStatusChange = (index, value) => {
     setStatus(prevStatus => {
       const newStatus = [...prevStatus];
       newStatus[index] = value;
       return newStatus;
+    });
+  };
+
+  const handleOddsChange = (index, value) => {
+    setOdds(prevOdds => {
+      const newOdds = [...prevOdds];
+      newOdds[index] = value;
+      return newOdds;
     });
   };
 
@@ -65,97 +67,132 @@ function App() {
 
   return (
     <Container maxWidth='lg'>
-      <Typography variant='h2' sx={{ p: 1 }}>Bet Calculator</Typography>
-      <FormControlLabel
-        control={
-          <Switch
-            onChange={(event) => setOddsFormat(event.target.checked ? 'fractional' : 'decimal')}
-          />
-        }
-        label="Odds Format"
-        labelPlacement="start"
-        sx={{ ml: 5 }}
-      />
-      <Grid container spacing={1} sx={{ my: 7 }}>
+
+      <Grid container spacing={1} sx={{ my: 2 }}>
         <Grid item sm={12} md={6}>
           <Paper sx={{ minHeight: 700, width: '100%' }} elevation={8}>
+            <Typography variant='h2' sx={{ p: 1, textAlign: 'left' }}>Bet Calculator</Typography>
             <Box sx={{ p: 2 }}>
               <FormControl>
-                <Box sx={{ mb: 2, display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
+                <Divider orientation="Horizontal" flexItem sx={{ mb: 3 }} >Stake</Divider>
+                <Box sx={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
                   <TextField
                     variant='filled'
-                    label='Stake'
-                    type='number'
+                    type='amount'
                     value={stake}
                     onChange={handleStakeChange}
                     error={error}
                     helperText={error ? 'Invalid input. Please enter a positive number.' : ''}
-                    sx={{ width: '200px' }}
+                    sx={{ width: '150px'}}
+                    InputProps={{
+                      startAdornment: <InputAdornment position="start">£</InputAdornment>,
+                    }}
                   />
                   <FormControlLabel
                     control={
                       <Switch
-                        checked={eachWay}
-                        onChange={(event) => setEachWay(event.target.checked)}
+                        checked={betslip.eachWay}
+                        onChange={(event) => setBetslip(prevBetslip => ({ ...prevBetslip, eachWay: event.target.checked }))}
                       />
                     }
                     label="Each Way"
-                    labelPlacement="start"
+                    labelPlacement="top"
                     sx={{ ml: 5 }}
                   />
                 </Box>
-                <Grid container spacing={2}>
-                  {types.map((type, index) => (
-                    <Grid item xs={6} sm={3} key={index}>
-                      <Button variant="outlined" onClick={() => handleTypeChange(type)} fullWidth>
-                        {type}
-                      </Button>
-                    </Grid>
-                  ))}
-                </Grid>
-                <Box sx={{ mt: 2 }}>
-                  {Array.from({ length: betTypes[betslip.type]?.selections || 0 }).map((_, index) => (
-                    <Box key={index} sx={{ display: 'flex', flexDirection: 'row', my: 1 }}>
-                      <Typography variant='h4' sx={{ width: '20px' }}>{index + 1}</Typography>
 
-                      <FormControl sx={{ minWidth: 120 }}>
-                        <InputLabel>Status</InputLabel>
-                        <Select
-                          value={status[index] || ''}
-                          onChange={(event) => handleStatusChange(index, event.target.value)}
-                        >
-                          <MenuItem value={'Won'}>Won</MenuItem>
-                          <MenuItem value={'Placed'}>Placed</MenuItem>
-                          <MenuItem value={'Lost'}>Lost</MenuItem>
-                          <MenuItem value={'Void'}>Void</MenuItem>
-                        </Select>
-                      </FormControl>
+                <Divider orientation="Horizontal" flexItem sx={{ my: 3 }} >Bet Type</Divider>
+                <Box sx={{ mb: 2, display: 'flex', alignItems: 'center' }}>
+                  <Grid container spacing={2} >
+                    {types.map((type, index) => (
+                      <Grid item xs={6} sm={3} key={index}>
+                        <Button variant="outlined" onClick={() => handleTypeChange(type)} fullWidth>
+                          {type}
+                        </Button>
+                      </Grid>
+                    ))}
+                  </Grid>
+                </Box>
 
-                      {oddsFormat === 'decimal' ? (
-                        <TextField
-                          type="number"
-                          onChange={(event) => handleOddsChange(index, event.target.value)}
-                          placeholder="Decimal odds"
-                        />
-                      ) : (
-                        <Box sx={{ display: 'flex', flexDirection: 'row'}}>
-                          <TextField
-                            type="number"
-                            onChange={(event) => handleFractionalOddsChange(index, 'numerator', event.target.value)}
-                          />
-                          <TextField
-                            type="number"
-                            onChange={(event) => handleFractionalOddsChange(index, 'denominator', event.target.value)}
-                          />
-                        </Box>
-                      )}
+                <Divider orientation="Horizontal" flexItem sx={{ my: 3 }}>Selections</Divider>
 
-                      {eachWay && (
+
+                <Box sx={{ display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', my: 2 }}>
+                  Number of Selections = {numSelections}
+                  <Button
+                    variant='outlined'
+                    onClick={() => setNumSelections(numSelections + 1)}
+                    disabled={numSelections >= 14}
+                  >
+                    +
+                  </Button>
+                  <Button
+                    variant='outlined'
+                    onClick={() => setNumSelections(numSelections - 1)}
+                    disabled={numSelections <= (betTypes[betslip.type]?.selections || 0)}
+                  >
+                    -
+                  </Button>
+                </Box>
+
+
+                <Box sx={{ my: 2 }}>
+                  <Box sx={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between', my: 1}}>
+                    <Typography variant='h4'></Typography>
+                    <Typography variant='h4'>Status</Typography>
+                    <Typography variant='h4'>Odds</Typography>
+                    <Typography variant='h4'>Terms</Typography>
+                  </Box>
+
+                  {Array.from({ length: numSelections }).map((_, index) => (
+                    <Grow in={true} key={index}>
+                      <Box key={index} sx={{ display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', my: 1, height: '80px', textAlign: 'center' }}>
+                        <Typography variant='h4' sx={{ width: '20px' }}>{index + 1}</Typography>
                         <FormControl sx={{ minWidth: 120 }}>
-                          <InputLabel>Place Terms</InputLabel>
                           <Select
-                            value={placeTerms[index] || ''}
+                            variant='filled'
+                            value={status[index] || 'Won'}
+                            sx={{ mr: 2 }}
+                            onChange={(event) => handleStatusChange(index, event.target.value)}
+                          >
+                            <MenuItem value={'Won'}>Won</MenuItem>
+                            <MenuItem value={'Placed'}>Placed</MenuItem>
+                            <MenuItem value={'Lost'}>Lost</MenuItem>
+                            <MenuItem value={'Void'}>Void</MenuItem>
+                          </Select>
+                        </FormControl>
+
+                        {oddsFormat === 'decimal' ? (
+                          <TextField
+                            variant='filled'
+                            type="number"
+                            onChange={(event) => handleOddsChange(index, event.target.value)}
+                            sx={{ width: '100px' }}
+                          />
+                        ) : (
+                          <Box sx={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
+                            <TextField
+                              variant='filled'
+                              type="number"
+                              sx={{ width: '50px', mb: 1.5 }}
+                              onChange={(event) => handleFractionalOddsChange(index, 'numerator', event.target.value)}
+                            />
+                            <Typography variant='h2' sx={{ mx: 1, }}>/</Typography>
+                            <TextField
+                              variant='filled'
+                              type="number"
+                              sx={{ width: '50px', mt: 1.5 }}
+                              onChange={(event) => handleFractionalOddsChange(index, 'denominator', event.target.value)}
+                            />
+                          </Box>
+                        )}
+                        <FormControl>
+                          <Select
+                            variant='filled'
+                            value={placeTerms[index] || '1/4'}
                             onChange={(event) => handlePlaceTermsChange(index, event.target.value)}
+                            disabled={!betslip.eachWay}
+                            sx={{ ml: 2, width: '100px' }}
                           >
                             <MenuItem value={'1/1'}>1/1</MenuItem>
                             <MenuItem value={'1/2'}>1/2</MenuItem>
@@ -165,17 +202,32 @@ function App() {
                             <MenuItem value={'1/6'}>1/6</MenuItem>
                           </Select>
                         </FormControl>
-                      )}
-                    </Box>
+                      </Box>
+                    </Grow>
                   ))}
-                </Box>
+                    </Box>
+
+
               </FormControl>
             </Box>
           </Paper>
         </Grid>
         <Grid item xs={12} sm={6}>
           <Betslip stake={stake} betType={betslip.type} eachWay={betslip.eachWay} odds={odds} />
+          <Box sx={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
+            <FormControlLabel
+              control={
+                <Switch
+                  onChange={(event) => setOddsFormat(event.target.checked ? 'decimal' : 'fractional')}
+                />
+              }
+              label="Odds Format:"
+              labelPlacement="start"
+            />
+            <Typography variant='h4' sx={{ p: 1, textAlign: 'center' }}>{oddsFormat}</Typography>
+          </Box>
         </Grid>
+
       </Grid>
     </Container>
   );
