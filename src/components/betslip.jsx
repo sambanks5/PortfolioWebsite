@@ -1,6 +1,5 @@
 import React from "react";
 import { Container, Typography, Box, FormControl, Paper, Grid, Button, TextField } from "@mui/material";
-//import { calculator } from "./betcruncher";
 
 const Betslip = ({ stake, betType, eachWay, odds }) => {
   // const bettingModule = require("/betcruncher");
