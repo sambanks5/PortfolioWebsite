@@ -1,44 +1,31 @@
-import React from "react";
+import React, { useState } from "react";
 import { Container, Typography, Box, FormControl, Paper, Grid, Button, TextField } from "@mui/material";
 
-const Betslip = ({ stake, betType, eachWay, odds }) => {
-  // const bettingModule = require("/betcruncher");
+const Betslip = ({ betslip, runners }) => {
+  const betcruncher = require("../betcruncher");
+  const [result, setResult] = useState(null);
 
-  // // console.log(stake, betType, eachWay);
-  // const [betslip, setBetslip] = React.useState({
-  //   type: "",
-  //   stake: "",
-  //   betType: "",
-  //   eachWay: false,
-  //   odds: [],
-  // });
-
-  // function calculateBet(betslip, runners) {
-  //   try {
-  //     const result = bettingModule.calculator(betslip, runners);
-  //     console.log(`Total stake: ${result.totalStake}`);
-  //     console.log(`Returns: ${result.returns}`);
-  //     console.log(`Profit: ${result.profit}`);
-  //   } catch (error) {
-  //     console.error(`Error calculating bet: ${error.message}`);
-  //   }
-  // }
+  const calculateResult = () => {
+    console.log('betslip:', betslip);
+    if (betslip && typeof betslip === 'object' && betslip !== null && 'stake' in betslip && 'type' in betslip && 'eachWay' in betslip) {
+      setResult(betcruncher.calculator(betslip, runners));
+    }
+  };
 
   return (
     <Paper sx={{ width: "80%", p: 2 }} elevation={8}>
       <Typography variant="h4" sx={{ mb: 2 }}>
-        Result
+        {result && `Total Stake: ${result.totalStake}`}
       </Typography>
-      <Typography variant="h6" sx={{ mb: 2 }}>
-        Stake: {stake} {stake !== null && stake !== "" && (eachWay ? "Each Way" : "Win Only")}
+      <Typography variant="h4" sx={{ mb: 2 }}>
+        {result && `Returns: ${result.returns}`}
       </Typography>
-      <Typography variant="h6" sx={{ mb: 2 }}>
-        Bet Type: {betType}
+      <Typography variant="h4" sx={{ mb: 2 }}>
+        {result && `Profit: ${result.profit}`}
       </Typography>
-      <Typography variant="h6" sx={{ mb: 2 }}>
-        Odds: {odds.join(", ")}
-      </Typography>
-      {/* <Button variant="outlined" onClick={() => calculateBet(betslip, runners)} fullWidth /> */}
+      <Button variant="outlined" onClick={calculateResult} fullWidth>
+        Calculate
+      </Button>
     </Paper>
   );
 };
