@@ -11,7 +11,7 @@ const Betslip = ({ betslip, runners }) => {
       setResult(betcruncher.calculator(betslip, runners));
     }
   };
-
+  
   return (
     <Paper sx={{ width: "80%", p: 2 }} elevation={8}>
       <Typography variant="h4" sx={{ mb: 2 }}>

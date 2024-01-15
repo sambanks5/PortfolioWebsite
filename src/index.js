@@ -9,17 +9,17 @@ const theme = createTheme({
   palette: {
     mode: 'dark',
     primary: {
-      main: '#3AAFB9',
+      main: '#F3EFF5',
     },
     secondary: {
-      main: '#97C8EB',
+      main: '#72B01D',
     },
     background: {
-      default: '#093A3E',
-      paper: '#001011',
+      default: '#454955',
+      paper: '#0D0A0B',
     },
     info: {
-      main: '#64E9EE',
+      main: '#3F7D20',
     },
   },
   typography: {

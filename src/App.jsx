@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { TransitionGroup, CSSTransition } from "react-transition-group";
 import Betslip from "./components/betslip";
 import "./App.css";
 import { Container, ToggleButton, ToggleButtonGroup, Divider, Typography, FormControlLabel, Switch, Box, FormControl, Paper, Grid, Button, TextField, InputAdornment, MenuItem, Select, Grow } from "@mui/material";
@@ -117,13 +118,10 @@ function App() {
   };
 
   return (
-    <Container maxWidth="lg">
-      <Typography variant="h2" sx={{ p: 1, textAlign: "left" }}>
-        Bet Calculator
-      </Typography>
-      <Grid container spacing={1} sx={{ my: 2 }}>
+    <Container sx={{ p: 0, m: 0 }}>
+      <Grid container spacing={1} sx={{ my: 1 }}>
         <Grid item md={12} lg={6}>
-          <Paper sx={{ minHeight: 700, width: "100%" }} elevation={8}>
+          <Paper sx={{ width: "100%" }} elevation={8}>
             {/* <Button variant="outlined" onClick={() => console.log(betcruncher.calculator(betslip, runners))} /> */}
             <Box sx={{ p: 2 }}>
               <FormControl>
@@ -139,7 +137,7 @@ function App() {
                     justifyContent: "space-between",
                   }}>
                   <TextField
-                    variant="filled"
+                    variant="outlined"
                     size="small"
                     type="amount"
                     value={stake}
@@ -166,7 +164,7 @@ function App() {
                     label="Each Way"
                     labelPlacement="top"
                   />
-                  <Box sx={{ border: "1px solid grey", borderRadius: "5px", p: 2, minWidth: "250px", textAlign: "center" }}>
+                  <Box sx={{ p: 2, minWidth: "250px", textAlign: "center" }}>
                     <Typography variant="h4" sx={{ mb: 1 }}>
                       {betslip.eachWay ? "£" + stake + " Win Only" : "£" + stake + " Each Way"}
                     </Typography>
@@ -188,6 +186,7 @@ function App() {
                           fullWidth
                           sx={{
                             borderColor: betslip.type === type ? "secondary.main" : "action.disabled",
+                            height: "50px",
                           }} // Change border color if active
                         >
                           {type}
@@ -196,96 +195,93 @@ function App() {
                     ))}
                   </Grid>
                 </Box>
-
-                {/*########## Selections ##########*/}
-
-                <Divider orientation="Horizontal" flexItem sx={{ my: 1 }}>
-                  Selections
-                </Divider>
-
-                <Grid container spacing={2}>
-                  <Grid item xs={12}>
-                    <Grid container justifyContent="space-between" alignItems="center">
-                      <Grid item>
-                        <Typography variant="h4"></Typography>
-                      </Grid>
-                      <Grid item>
-                        <Typography variant="h4">Status</Typography>
-                      </Grid>
-                      <Grid item>
-                        <Typography variant="h4">Odds</Typography>
-                      </Grid>
-                      <Grid item>
-                        <Typography variant="h4">Terms</Typography>
-                      </Grid>
-                    </Grid>
-                  </Grid>
-                  {Array.from({ length: numSelections }).map((_, index) => (
-                    <Grow in={true} key={index}>
-                      <Grid item xs={12}>
-                        <Grid container justifyContent="space-between" alignItems="center">
-                          <Grid item>
-                            <Typography variant="h4">{index + 1}</Typography>
-                          </Grid>
-                          <Grid item>
-                            <FormControl>
-                              <Select variant="filled" size="small" sx={{ minWidth: "150px" }} value={status[index] !== undefined ? status[index] : 1} onChange={(event) => handleStatusChange(index, parseInt(event.target.value, 10))}>
-                                <MenuItem value={1}>Won</MenuItem>
-                                <MenuItem value={2}>Placed</MenuItem>
-                                <MenuItem value={0}>Lost</MenuItem>
-                                <MenuItem value={-1}>Void</MenuItem>
-                              </Select>
-                            </FormControl>
-                          </Grid>
-                          <Grid item>
-                            {oddsFormat === "decimal" ? (
-                              <TextField variant="filled" type="number" onChange={(event) => handleOddsChange(index, event.target.value)} sx={{ width: "100px" }} />
-                            ) : (
-                              <Grid container alignItems="center">
-                                <Grid item>
-                                  <TextField variant="filled" type="number" sx={{ width: "50px", mb: 1.5 }} onChange={(event) => handleFractionalOddsChange(index, "numerator", event.target.value)} />
-                                </Grid>
-                                <Grid item>
-                                  <Typography variant="h2" sx={{ mx: 1 }}>
-                                    /
-                                  </Typography>
-                                </Grid>
-                                <Grid item>
-                                  <TextField variant="filled" type="number" sx={{ width: "50px", mt: 1.5 }} onChange={(event) => handleFractionalOddsChange(index, "denominator", event.target.value)} />
-                                </Grid>
-                              </Grid>
-                            )}
-                          </Grid>
-                          <Grid item>
-                            <FormControl>
-                              <Select variant="filled" value={runners[index]?.terms || "1/4"} onChange={(event) => handlePlaceTermsChange(index, event.target.value)} disabled={!betslip.eachWay}>
-                                <MenuItem value={"1/1"}>1/1</MenuItem>
-                                <MenuItem value={"1/2"}>1/2</MenuItem>
-                                <MenuItem value={"1/3"}>1/3</MenuItem>
-                                <MenuItem value={"1/4"}>1/4</MenuItem>
-                                <MenuItem value={"1/5"}>1/5</MenuItem>
-                                <MenuItem value={"1/6"}>1/6</MenuItem>
-                              </Select>
-                            </FormControl>
-                          </Grid>
-                        </Grid>
-                        <Divider orientation="Horizontal" flexItem sx={{ my: 1 }} />
-                      </Grid>
-                    </Grow>
-                  ))}
-                </Grid>
               </FormControl>
             </Box>
           </Paper>
         </Grid>
         <Grid item xs={12} sm={6}>
-          <Betslip betslip={betslip} runners={runners} />      
-          <Box
-            sx={{
-              display: "flex",
-              flexDirection: "row",
-              alignItems: "center",
-            }}></Box>
+          <Paper sx={{ width: "100%", minHeight: "500px", p: 2 }} elevation={8}>
+            {/*########## Selections ##########*/}
+
+            <Divider orientation="Horizontal" flexItem>
+              Selections
+            </Divider>
+
+            <Grid container spacing={1}>
+              <Grid item xs={12}>
+                <Grid container justifyContent="space-between" alignItems="center">
+                  <Grid item>
+                    <Typography variant="h4"></Typography>
+                  </Grid>
+                  <Grid item>
+                    <Typography variant="h4">Status</Typography>
+                  </Grid>
+                  <Grid item>
+                    <Typography variant="h4">Odds</Typography>
+                  </Grid>
+                  <Grid item>
+                    <Typography variant="h4">Terms</Typography>
+                  </Grid>
+                </Grid>
+              </Grid>
+              <TransitionGroup id="yes">
+                {Array.from({ length: numSelections }).map((_, index) => (
+                  <Grow in={true} key={index}>
+                    <Grid item xs={12}>
+                      <Grid container justifyContent="space-between" alignItems="center" sx={{ pb: 1 }}>
+                        <Grid item>
+                          <Typography variant="h4">{index + 1}</Typography>
+                        </Grid>
+                        <Grid item>
+                          <FormControl>
+                            <Select variant="outlined" size="small" sx={{ minWidth: "150px" }} value={status[index] !== undefined ? status[index] : 1} onChange={(event) => handleStatusChange(index, parseInt(event.target.value, 10))}>
+                              <MenuItem value={1}>Won</MenuItem>
+                              <MenuItem value={2}>Placed</MenuItem>
+                              <MenuItem value={0}>Lost</MenuItem>
+                              <MenuItem value={-1}>Void</MenuItem>
+                            </Select>
+                          </FormControl>
+                        </Grid>
+                        <Grid item>
+                          {oddsFormat === "decimal" ? (
+                            <TextField variant="outlined" type="number" onChange={(event) => handleOddsChange(index, event.target.value)} sx={{ width: "100px" }} />
+                          ) : (
+                            <Grid container alignItems="center">
+                              <Grid item>
+                                <TextField variant="outlined" type="number" sx={{ width: "50px", mb: 1.5 }} onChange={(event) => handleFractionalOddsChange(index, "numerator", event.target.value)} />
+                              </Grid>
+                              <Grid item>
+                                <Typography variant="h2" sx={{ mx: 1 }}>
+                                  /
+                                </Typography>
+                              </Grid>
+                              <Grid item>
+                                <TextField variant="outlined" type="number" sx={{ width: "50px", mt: 1.5 }} onChange={(event) => handleFractionalOddsChange(index, "denominator", event.target.value)} />
+                              </Grid>
+                            </Grid>
+                          )}
+                        </Grid>
+                        <Grid item>
+                          <FormControl>
+                            <Select variant="outlined" value={runners[index]?.terms || "1/4"} onChange={(event) => handlePlaceTermsChange(index, event.target.value)} disabled={!betslip.eachWay}>
+                              <MenuItem value={"1/1"}>1/1</MenuItem>
+                              <MenuItem value={"1/2"}>1/2</MenuItem>
+                              <MenuItem value={"1/3"}>1/3</MenuItem>
+                              <MenuItem value={"1/4"}>1/4</MenuItem>
+                              <MenuItem value={"1/5"}>1/5</MenuItem>
+                              <MenuItem value={"1/6"}>1/6</MenuItem>
+                            </Select>
+                          </FormControl>
+                        </Grid>
+                      </Grid>
+                      <Divider orientation="Horizontal" flexItem sx={{ my: 1 }} />
+                    </Grid>
+                  </Grow>
+                ))}
+              </TransitionGroup>
+            </Grid>
+          </Paper>
+          <Betslip betslip={betslip} runners={runners} />
 
           <Paper sx={{ minHeight: 300, width: "80%", position: "relative" }} elevation={8}>
             <Divider orientation="Horizontal" flexItem sx={{ py: 2 }}>
