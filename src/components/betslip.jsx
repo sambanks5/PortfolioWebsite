@@ -13,7 +13,7 @@ const Betslip = ({ betslip, runners }) => {
   };
   
   return (
-    <Paper sx={{ width: "80%", p: 2 }} elevation={8}>
+    <Paper sx={{ p: 2 }} elevation={8}>
       <Typography variant="h4" sx={{ mb: 2 }}>
         {result && `Total Stake: ${result.totalStake}`}
       </Typography>

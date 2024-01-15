@@ -15,8 +15,8 @@ const theme = createTheme({
       main: '#72B01D',
     },
     background: {
-      default: '#454955',
-      paper: '#0D0A0B',
+      default: '#07072d',
+      paper: '#140647',
     },
     info: {
       main: '#3F7D20',
@@ -55,6 +55,27 @@ const theme = createTheme({
           '& input[type=number]': {
             '-moz-appearance': 'textfield',
           },
+        },
+      },
+    },
+    MuiOutlinedInput: {
+      styleOverrides: {
+        root: {
+          borderRadius: 15, // Set the border radius to your desired value
+        },
+      },
+    },
+    MuiButton: {
+      styleOverrides: {
+        root: {
+          borderRadius: 15, // Set the border radius to your desired value
+        },
+      },
+    },
+    MuiPaper: {
+      styleOverrides: {
+        root: {
+          borderRadius: 15, // Set the border radius to your desired value
         },
       },
     },
