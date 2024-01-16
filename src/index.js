@@ -12,10 +12,10 @@ const theme = createTheme({
       main: '#FBFCFF',
     },
     secondary: {
-      main: '#B5F44A',
+      main: '#fbe180',
     },
     background: {
-      default: '#274156',
+      default: '#fbe180',
       paper: '#1C6E8C',
     },
     info: {
@@ -23,17 +23,14 @@ const theme = createTheme({
     },
   },
   typography: {
-    fontfamily: 'Raleway, sans-serif',
-    letterSpacing: '1px', // Add your desired letter spacing here
+    fontfamily: 'Montserrat, sans-serif',
 
     h1: {
       fontSize: 32,
-      letterSpacing: '0.25px', // Add your desired letter spacing here
 
     },
     h2: {
       fontSize: 24,
-      letterSpacing: '0.25px', // Add your desired letter spacing here
 
     },
     h3: {
