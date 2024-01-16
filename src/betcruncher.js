@@ -152,7 +152,7 @@ module.exports = (function () {
         // Validate the stake
         betslip.stake = parseFloat(betslip.stake);
         if (isNaN(betslip.stake)) {
-            throw new Error("Stake must be a number");
+            betslip.stake = 0;
         }
 
         // Short circuit here: nothing ventured, nothing gained

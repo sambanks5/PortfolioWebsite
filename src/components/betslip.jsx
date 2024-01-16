@@ -13,15 +13,15 @@ const Betslip = ({ betslip, runners }) => {
   };
   
   return (
-    <Paper sx={{ p: 2 }} elevation={8}>
+    <Paper sx={{ p: 2, position: "sticky", top: 10, minHeight: 250}} elevation={8}>
       <Typography variant="h4" sx={{ mb: 2 }}>
-        {result && `Total Stake: ${result.totalStake}`}
+        {result ? `Total Stake: ${result.totalStake}` : 'Total Stake: 0'}
       </Typography>
       <Typography variant="h4" sx={{ mb: 2 }}>
-        {result && `Returns: ${result.returns}`}
+        {result ? `Returns: ${result.returns}` : 'Returns: 0'}
       </Typography>
       <Typography variant="h4" sx={{ mb: 2 }}>
-        {result && `Profit: ${result.profit}`}
+        {result ? `Profit: ${result.profit}` : 'Profit: 0'}
       </Typography>
       <Button variant="outlined" onClick={calculateResult} fullWidth>
         Calculate

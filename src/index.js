@@ -9,26 +9,32 @@ const theme = createTheme({
   palette: {
     mode: 'dark',
     primary: {
-      main: '#F3EFF5',
+      main: '#FBFCFF',
     },
     secondary: {
-      main: '#72B01D',
+      main: '#B5F44A',
     },
     background: {
-      default: '#07072d',
-      paper: '#140647',
+      default: '#274156',
+      paper: '#1C6E8C',
     },
     info: {
-      main: '#3F7D20',
+      main: '#A24936',
     },
   },
   typography: {
-    fontFamily: 'Montserrat, sans-serif',
+    fontfamily: 'Raleway, sans-serif',
+    letterSpacing: '1px', // Add your desired letter spacing here
+
     h1: {
       fontSize: 32,
+      letterSpacing: '0.25px', // Add your desired letter spacing here
+
     },
     h2: {
       fontSize: 24,
+      letterSpacing: '0.25px', // Add your desired letter spacing here
+
     },
     h3: {
       fontSize: 18.72,
@@ -69,6 +75,8 @@ const theme = createTheme({
       styleOverrides: {
         root: {
           borderRadius: 15, // Set the border radius to your desired value
+          letterSpacing: '1px', // Add your desired letter spacing here
+
         },
       },
     },
@@ -76,10 +84,12 @@ const theme = createTheme({
       styleOverrides: {
         root: {
           borderRadius: 15, // Set the border radius to your desired value
+          
         },
       },
     },
   },
+
 });
 
 const root = ReactDOM.createRoot(document.getElementById('root'));

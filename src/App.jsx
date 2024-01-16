@@ -12,7 +12,7 @@ function App() {
 	const betcruncher = require("./betcruncher");
 
 	const [betslip, setBetslip] = useState({
-		stake: "0",
+		stake: "",
 		type: "single",
 		eachWay: false,
 	});
@@ -24,7 +24,6 @@ function App() {
 	const [error, setError] = useState(false);
 	const [oddsFormat, setOddsFormat] = useState("fractional");
 	const [status, setStatus] = useState(Array(betslip.selections).fill(1));
-	const [placeTerms, setPlaceTerms] = useState(Array(betslip.selections).fill("1/4"));
 	const [numSelections, setNumSelections] = useState(betTypes[betslip.type]?.selections || 0);
 
 	const initializeRunners = (numSelections) => {
@@ -105,73 +104,40 @@ function App() {
 
 	const handleFractionalOddsChange = (index, part, value) => {
 		setRunners((prevRunners) => {
-			const newRunners = [...prevRunners];
-			const currentOdds = newRunners[index].odds.split("/");
+		  const newRunners = [...prevRunners];
+		  let currentOdds = newRunners[index].odds;
+		  if (typeof currentOdds === 'string') {
+			currentOdds = currentOdds.split("/");
 			if (part === "numerator") {
-				currentOdds[0] = value;
+			  currentOdds[0] = value;
 			} else if (part === "denominator") {
-				currentOdds[1] = value;
+			  currentOdds[1] = value;
 			}
 			newRunners[index] = { ...newRunners[index], odds: currentOdds.join("/") };
-			return newRunners;
+		  }
+		  return newRunners;
 		});
-	};
+	  };
 
 	return (
-		<Container maxWidth>
+		<Container maxWidth="xl">
 			<Grid
 				container
 				spacing={2}
 				sx={{ my: 1 }}>
-				<Grid
-					item
-					xs={12}
-					sm={3}>
-					<Betslip
-						betslip={betslip}
-						runners={runners}
-					/>
-					<Box
-						id="settings-container"
-						sx={{ border: "1px solid grey", borderRadius: 5, p: 2, mt: 2 }}>
-						<Divider
-							orientation="Horizontal"
-							flexItem
-							sx={{ py: 2 }}>
-							Settings
-						</Divider>
-						<Box sx={{ display: "flex", flexDirection: "row", justifyContent: "space-evenly" }}>
-							<Typography
-								variant="h5"
-								sx={{ p: 1, textAlign: "left" }}>
-								Odds Format
-							</Typography>
-							<ToggleButtonGroup
-								value={oddsFormat}
-								size="small"
-								exclusive
-								onChange={(event, newFormat) => {
-									if (newFormat !== null) {
-										setOddsFormat(newFormat);
-									}
-								}}>
-								<ToggleButton value="fractional">Fractional</ToggleButton>
-								<ToggleButton value="decimal">Decimal</ToggleButton>
-							</ToggleButtonGroup>
-						</Box>
-					</Box>
-				</Grid>
+				
+				
 				<Grid
 					id="stake-container"
 					item
-					xs={12}
-					sm={4}>
-					<Box sx={{ border: "1px solid grey", borderRadius: 5, p: 2, minHeight: "720px" }}>
+					md={12}
+					lg={8}>
+					<Box sx={{borderRadius: 5, p: 2}}>
 						<FormControl>
 							<Divider
 								orientation="Horizontal"
 								flexItem
-								sx={{ mb: 3 }}>
+								sx={{ mb: 1 }}>
 								Stake
 							</Divider>
 							<Box
@@ -194,42 +160,37 @@ function App() {
 										startAdornment: <InputAdornment position="start">£</InputAdornment>,
 									}}
 								/>
+								
 								<FormControlLabel
 									control={
-										<Switch
-											checked={betslip.eachWay}
-											onChange={(event) =>
-												setBetslip((prevBetslip) => ({
-													...prevBetslip,
-													eachWay: event.target.checked,
-												}))
-											}
-										/>
+										<ToggleButtonGroup
+										value={betslip.eachWay ? 'Each Way' : 'Win Only'}
+										exclusive
+										onChange={(event, newValue) =>
+											setBetslip((prevBetslip) => ({
+											...prevBetslip,
+											eachWay: newValue === 'Each Way',
+											}))
+										}
+										>
+										<ToggleButton value="Win Only">Win Only</ToggleButton>
+										<ToggleButton value="Each Way">Each Way</ToggleButton>
+										</ToggleButtonGroup>
 									}
-									label="Each Way"
-									labelPlacement="top"
-								/>
-								<Box sx={{ p: 2, minWidth: "250px", textAlign: "center" }}>
-									<Typography
-										variant="h4"
-										sx={{ mb: 1 }}>
-										{betslip.eachWay ? "£" + stake + " Win Only" : "£" + stake + " Each Way"}
-									</Typography>
-
-									<Typography variant="h4">{betslip.eachWay ? "Total Stake: £" + stake * 2 : "Total Stake: £" + stake}</Typography>
-								</Box>
+									labelPlacement="start"
+									/>
 							</Box>
 
 							<Divider
 								orientation="Horizontal"
 								flexItem
-								sx={{ my: 3 }}>
+								sx={{ my: 1 }}>
 								Bet Type
 							</Divider>
-							<Box sx={{ mb: 2 }}>
+							<Box>
 								<Grid
 									container
-									spacing={3}>
+									spacing={2}>
 									{types.map((type, index) => (
 										<Grid
 											item
@@ -242,10 +203,11 @@ function App() {
 												fullWidth
 												sx={{
 													borderColor: betslip.type === type ? "secondary.main" : "action.disabled",
-													height: "75px",
-												}} // Change border color if active
+													height: "50px",
+													textTransform: "none",
+												}}
 											>
-												{type}
+												{type.charAt(0).toUpperCase() + type.slice(1)}
 											</Button>
 										</Grid>
 									))}
@@ -253,13 +215,7 @@ function App() {
 							</Box>
 						</FormControl>
 					</Box>
-				</Grid>
-				<Grid
-					id="selections-container"
-					item
-					xs={12}
-					sm={5}>
-					<Box sx={{ border: "1px solid grey", borderRadius: 5, p: 2 }}>
+					<Box sx={{ borderRadius: 5, p: 2 }}>
 						<Divider
 							orientation="Horizontal"
 							flexItem>
@@ -268,7 +224,8 @@ function App() {
 						<Grid
 							container
 							spacing={0}
-							id="Yes">
+							id="Yes"
+							>
 							<Grid
 								item
 								xs={12}>
@@ -303,7 +260,7 @@ function App() {
 												alignItems="center"
 												sx={{ pb: 1 }}>
 												<Grid item>
-													<Typography variant="h4">{index + 1}</Typography>
+													<Typography variant="h4" sx={{ml: 1}}>{index + 1}</Typography>
 												</Grid>
 												<Grid item>
 													<FormControl>
@@ -324,46 +281,43 @@ function App() {
 													sx={{ minWidth: "150px", display: "flex", justifyContent: "center" }}>
 													{oddsFormat === "decimal" ? (
 														<TextField
-															variant="outlined"
-															type="number"
-															onChange={(event) => handleOddsChange(index, event.target.value)}
-															sx={{ width: "100px" }}
+														variant="outlined"
+														type="number"
+														defaultValue="2.0"
+														onChange={(event) => handleOddsChange(index, event.target.value)}
+														sx={{ width: "100px" }}
 														/>
 													) : (
-														<Grid
-															container
-															alignItems="center">
-															<Grid item>
-																<TextField
-																	variant="outlined"
-																	type="number"
-																	sx={{ width: "60px", mb: 1.5 }}
-																	onChange={(event) => handleFractionalOddsChange(index, "numerator", event.target.value)}
-																/>
-															</Grid>
-															<Grid item>
-																<Typography
-																	variant="h2"
-																	sx={{ mx: 1 }}>
-																	/
-																</Typography>
-															</Grid>
-															<Grid item>
-																<TextField
-																	variant="outlined"
-																	type="number"
-																	sx={{ width: "60px", mt: 1.5 }}
-																	onChange={(event) => handleFractionalOddsChange(index, "denominator", event.target.value)}
-																/>
-															</Grid>
-														</Grid>
+													<Grid container alignItems="center">
+													<Grid item>
+														<TextField
+														variant="outlined"
+														type="number"
+														defaultValue="1"
+														sx={{ width: "60px", mb: 1.5 }}
+														onChange={(event) => handleFractionalOddsChange(index, "numerator", event.target.value)}
+														/>
+													</Grid>
+													<Grid item>
+														<Typography variant="h2" sx={{ mx: 1 }}>/</Typography>
+													</Grid>
+													<Grid item>
+														<TextField
+														variant="outlined"
+														type="number"
+														defaultValue="1"
+														sx={{ width: "60px", mt: 1.5 }}
+														onChange={(event) => handleFractionalOddsChange(index, "denominator", event.target.value)}
+														/>
+													</Grid>
+													</Grid>
 													)}
 												</Grid>
 												<Grid item>
 													<FormControl>
 														<Select
 															variant="outlined"
-															value={runners[index]?.terms || "1/4"}
+															value={"1/4"}
 															onChange={(event) => handlePlaceTermsChange(index, event.target.value)}
 															disabled={!betslip.eachWay}>
 															<MenuItem value={"1/1"}>1/1</MenuItem>
@@ -388,9 +342,56 @@ function App() {
 						</Grid>
 					</Box>
 				</Grid>
+
+				{/* <Grid
+					id="selections-container"
+					item
+					md={12}
+					lg={5}>
+
+				</Grid> */}
+				<Grid
+					id="betslip-container"
+					item
+					sm={12}
+					lg={3}>
+					<Betslip
+						betslip={betslip}
+						runners={runners}
+					/>
+					<Box
+						id="settings-container"
+						sx={{  p: 2, mt: 2, position: "sticky", top: "280px" }}>
+						<Divider
+							orientation="Horizontal"
+							flexItem
+							sx={{ py: 2 }}>
+							Settings
+						</Divider>
+						<Box sx={{ display: "flex", flexDirection: "row", justifyContent: "space-evenly" }}>
+							<Typography
+								variant="h5"
+								sx={{ p: 1, textAlign: "left" }}>
+								Odds Format
+							</Typography>
+							<ToggleButtonGroup
+								value={oddsFormat}
+								size="small"
+								exclusive
+								onChange={(event, newFormat) => {
+									if (newFormat !== null) {
+										setOddsFormat(newFormat);
+									}
+								}}>
+								<ToggleButton value="fractional">Fractional</ToggleButton>
+								<ToggleButton value="decimal">Decimal</ToggleButton>
+							</ToggleButtonGroup>
+						</Box>
+					</Box>
+				</Grid>
 			</Grid>
 
-			<Box sx={{ position: "absolute", bottom: "0", left: "5px", display: "flex", flexDirection: "row", justifyContent: "space-evenly" }}>
+			<Box sx={{ position: "sticky", bottom: "0", right: "50px", display: "flex", flexDirection: "row", justifyContent:"end"}}>
 				<Typography
 					variant="h5"
 					sx={{ p: 1.5, textAlign: "left", marginBottom: "0" }}>
