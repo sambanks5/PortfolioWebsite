@@ -9,21 +9,21 @@ const theme = createTheme({
   palette: {
     mode: 'dark',
     primary: {
-      main: '#FBFCFF',
+      main: '#f9f3d9',
     },
     secondary: {
-      main: '#fbe180',
+      main: '#f9b73f',
     },
     background: {
-      default: '#fbe180',
-      paper: '#17585e',
+      default: '#f9b73f',
+      paper: '#114036',
     },
     info: {
       main: '#A24936',
     },
   },
   typography: {
-    fontfamily: 'Montserrat, sans-serif',
+    fontFamily: '"Bricolage Grotesque", sans-serif',
 
     h1: {
       fontSize: 32,

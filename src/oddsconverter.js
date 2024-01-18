@@ -187,7 +187,7 @@ module.exports = (function () {
         default:
             throw new Error("Cannot fathom odds format");
         }
-
+        console.log(converted);
         return converted;
     };
 }());

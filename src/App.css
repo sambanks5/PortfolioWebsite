@@ -6,8 +6,8 @@ body {
   background-position: center;
 }
 
-.app {
-  height: 150vh;
+.app-container {
+  width: 100vw;
 }
 
 .item-enter {
