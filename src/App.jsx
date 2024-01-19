@@ -366,8 +366,8 @@ function App() {
               </Box>
             </Grid>
           </Grid>
-
-          <Box id="hello" sx={{ borderRadius: 5, p: 2, display: "flex", justifyContent: "center" }}>
+          <Divider sx={{ my: 4 }} />
+          <Box id="hello" sx={{ display: "flex", justifyContent: "center" }}>
             <Grid container spacing={0} id="Yes" sx={{ maxWidth: 800 }}>
               <TransitionGroup component={Grid} container item xs={12} spacing={1}>
                 {Array.from({ length: numSelections }).map((_, index) => (
@@ -382,7 +382,7 @@ function App() {
                             alignItems: "center",
                             justifyContent: "space-between",
                             width: "100%",
-							minWidth: "350px",
+							              minWidth: "350px",
                             elevation: 3,
                             ":hover": {
                               boxShadow: 6,
@@ -407,17 +407,17 @@ function App() {
                             {oddsFormat === "decimal" ? (
                               <TextField variant="standard" type="number" defaultValue="2.0" onChange={(event) => handleOddsChange(index, event.target.value)} sx={{ width: "100px" }} />
                             ) : (
-                              <Grid container alignItems="center">
+                              <Grid container id="fractions-container" alignItems="center" justifyContent="center">
                                 <Grid item>
-                                  <TextField variant="standard" type="number" defaultValue="1" sx={{ width: "50px", mb: 1.5 }} onChange={(event) => handleFractionalOddsChange(index, "numerator", event.target.value)} />
+                                  <TextField variant="standard" type="number" defaultValue="1" sx={{ width: "40px", mb: 1.5 }} onChange={(event) => handleFractionalOddsChange(index, "numerator", event.target.value)} />
                                 </Grid>
                                 <Grid item>
-                                  <Typography variant="h2" sx={{ mx: 1 }}>
+                                  <Typography variant="h2" sx={{ mx: 1, mt: 1 }}>
                                     /
                                   </Typography>
                                 </Grid>
                                 <Grid item>
-                                  <TextField variant="standard" type="number" defaultValue="1" sx={{ width: "50px", mt: 1.5 }} onChange={(event) => handleFractionalOddsChange(index, "denominator", event.target.value)} />
+                                  <TextField variant="standard" type="number" defaultValue="1" sx={{ width: "40px", mt: 1.5 }} onChange={(event) => handleFractionalOddsChange(index, "denominator", event.target.value)} />
                                 </Grid>
                               </Grid>
                             )}
