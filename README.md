@@ -19,10 +19,12 @@ Betcruncher.js is a bet calculator engine made in javascript (https://github.com
 - Error handling... 
 
 Current state of the UI (16/01/24)
+
 ![Alt text](image.png)
 ![Alt text](image-1.png)
 ![Alt text](image-2.png)
 
 Mobile views
+
 ![Alt text](image-3.png)
 ![Alt text](image-4.png)

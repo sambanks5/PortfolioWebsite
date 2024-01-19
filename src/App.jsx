@@ -333,7 +333,7 @@ function App() {
             </Grid>
 
             <Grid item sm={12} md={6} sx={{ display: "flex", flexDirection: "row", justifyContent: "center" }}>
-              <Box id="bet-info-container" sx={{ display: "flex", flexDirection: "row", alignItems: "center", justifyContent: "center", textAlign: "center", width: 400, m: 2 }}>
+              <Box id="bet-info-container" sx={{ display: "flex", flexDirection: "row", alignItems: "center", justifyContent: "center", textAlign: "center", width: {md: 400, sm: 600}, m: 2 }}>
                 <Card
                   sx={{
                     ":hover": {
@@ -365,8 +365,14 @@ function App() {
                 </Card>
               </Box>
             </Grid>
+
+
           </Grid>
+
+
           <Divider sx={{ my: 4 }} />
+          
+          
           <Box id="hello" sx={{ display: "flex", justifyContent: "center" }}>
             <Grid container spacing={0} id="Yes" sx={{ maxWidth: 800 }}>
               <TransitionGroup component={Grid} container item xs={12} spacing={1}>
@@ -447,7 +453,7 @@ function App() {
           <Betslip betslip={betslip} runners={runners} />
         </Grid>
       </Grid>
-      <Fab color="secondary" variant="extended" aria-label="add" sx={{position: "sticky", top: 700, right: 350}}>
+      <Fab color="secondary" variant="extended" aria-label="add" sx={{position: "fixed", top: 700, right: 350}}>
         <CalculateIcon sx={{ mr: 1 }} />
         Calculate
       </Fab>
