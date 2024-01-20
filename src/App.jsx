@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { TransitionGroup, CSSTransition } from "react-transition-group";
+import { TransitionGroup } from "react-transition-group";
 import Betslip from "./components/betslip";
 import "./App.css";
 import { Container, Fab, Drawer, Divider, ToggleButton, ToggleButtonGroup, CardContent, Typography, FormControlLabel, Switch, Box, FormControl, Paper, Grid, Button, TextField, InputAdornment, MenuItem, Select, Grow, Card } from "@mui/material";
@@ -11,17 +11,16 @@ import IconButton from "@mui/material/IconButton";
 import { betTypes } from "./betcruncher";
 
 function App() {
-  const betcruncher = require("./betcruncher");
 
   const [betslip, setBetslip] = useState({
     stake: "",
     type: "single",
     eachWay: false,
   });
+
   const types = Object.keys(betTypes);
   const [runners, setRunners] = useState([]);
   const [stake, setStake] = useState("");
-  const [odds, setOdds] = useState([]);
   const [error, setError] = useState(false);
   const [oddsFormat, setOddsFormat] = useState("fractional");
   const [position, setPosition] = useState(Array(betslip.selections).fill(1));
@@ -43,31 +42,31 @@ function App() {
     },
     double: {
       description: "A single bet on two outcomes in different events. Both selections must win to guarantee a return.",
-      numBets: 2,
+      numBets: 1,
     },
     treble: {
       description: "A single bet on three outcomes in different events. All three selections must win to guarantee a return.",
-      numBets: 3,
+      numBets: 1,
     },
     fourfold: {
       description: "An accumulator that comprises of four selections in one bet. All of the selections must win to guarantee a return.",
-      numBets: 4,
+      numBets: 1,
     },
     fivefold: {
       description: "An accumulator that comprises of five selections in one bet. All of the selections must win to guarantee a return.",
-      numBets: 5,
+      numBets: 1,
     },
     sixfold: {
       description: "An accumulator that comprises of six selections in one bet. All of the selections must win to guarantee a return.",
-      numBets: 6,
+      numBets: 1,
     },
     sevenfold: {
       description: "An accumulator that comprises of seven selections in one bet. All of the selections must win to guarantee a return.",
-      numBets: 7,
+      numBets: 1,
     },
     eightfold: {
       description: "An accumulator that comprises of eight selections in one bet. All of the selections must win to guarantee a return.",
-      numBets: 8,
+      numBets: 1,
     },
     trixie: {
       description: "A bet comprising three selections and four bets - three doubles and a treble. A minimum of two selections must win to guarantee a return. For example, a £2.50 Trixie would cost £10. A £2.50 each-way Trixie would cost £20.",
@@ -122,27 +121,22 @@ function App() {
   const initializeRunners = (numSelections) => {
     setRunners((prevRunners) => {
       if (numSelections > prevRunners.length) {
-        // If numSelections has increased, add new runners
         const newRunners = [...prevRunners];
         for (let i = prevRunners.length; i < numSelections; i++) {
           newRunners.push({ odds: "1/1", terms: "1/4", position: 1 });
         }
-        // Also update the status state
         setPosition((prevPosition) => [...prevPosition, ...new Array(numSelections - prevPosition.length).fill(1)]);
         return newRunners;
       } else if (numSelections < prevRunners.length) {
-        // If numSelections has decreased, remove runners
-        // Also update the status state
+
         setPosition((prevPosition) => prevPosition.slice(0, numSelections));
         return prevRunners.slice(0, numSelections);
       } else {
-        // If numSelections hasn't changed, return the existing runners
         return prevRunners;
       }
     });
   };
 
-  // Call this function whenever numSelections changes
   useEffect(() => {
     initializeRunners(numSelections);
   }, [numSelections]);
@@ -186,13 +180,12 @@ function App() {
 
   const handleOddsChange = (index, value) => {
     if (!value) {
-      // Value is undefined, null, or empty. Handle this case as needed.
       return;
     }
 
     setRunners((prevRunners) => {
       const newRunners = [...prevRunners];
-      const decimalOdds = oddsConverter(value).decimal; // Convert to decimal
+      const decimalOdds = oddsConverter(value).decimal;
       newRunners[index] = { ...newRunners[index], odds: decimalOdds };
       return newRunners;
     });
@@ -200,7 +193,6 @@ function App() {
 
   const handleFractionalOddsChange = (index, part, value) => {
     if (!value) {
-      // Value is undefined, null, or empty. Handle this case as needed.
       return;
     }
 
@@ -213,7 +205,7 @@ function App() {
         currentOdds.denominator = value;
       }
       const fractionalOdds = `${currentOdds.numerator}/${currentOdds.denominator}`;
-      const decimalOdds = oddsConverter(fractionalOdds).decimal; // Convert to decimal
+      const decimalOdds = oddsConverter(fractionalOdds).decimal;
       newRunners[index] = { ...newRunners[index], odds: decimalOdds, fractionalOdds: currentOdds };
       return newRunners;
     });
