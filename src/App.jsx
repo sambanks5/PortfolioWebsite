@@ -1,24 +1,26 @@
 import React, { useState, useEffect } from "react";
+import Header from "./components/header.jsx";
 import Calculator from "./components/calculator.jsx";
 import Betslip from "./components/betslip";
 import "./App.css";
-import { Container, Fab, Grid } from "@mui/material";
+import { Container, Fab, Grid, Alert, Grow } from "@mui/material";
 import { betTypes } from "./betcruncher";
-import CalculateIcon from "@mui/icons-material/Calculate";
-
-import Header from "./components/header.jsx";
 
 function App() {
+  const betcruncher = require("./betcruncher");
   const [betslip, setBetslip] = useState({
     stake: "",
     type: "single",
     eachWay: false,
   });
+  const [showAlert, setShowAlert] = useState(false);
+  const [result, setResult] = useState(null);
   const [stake, setStake] = useState("");
   const oddsConverter = require("./oddsconverter.js");
   const [runners, setRunners] = useState([]);
   const [error, setError] = useState(false);
   const [oddsFormat, setOddsFormat] = useState("fractional");
+  const [terms, setTerms] = useState("1/4");
   const [position, setPosition] = useState(Array(betslip.selections).fill(1));
   const [numSelections, setNumSelections] = useState(betTypes[betslip.type]?.selections || 0);
 
@@ -120,22 +122,49 @@ function App() {
     });
   };
 
+  const handleFabClick = async () => {
+    window.scrollTo({
+      top: document.body.scrollHeight,
+      behavior: "smooth",
+    });
+
+    await calculateResult();
+  };
+
+  const calculateResult = () => {
+    return new Promise((resolve, reject) => {
+      console.log("betslip:", betslip);
+      if (betslip && typeof betslip === "object" && betslip !== null && "type" in betslip && "eachWay" in betslip) {
+        if (stake === 0 || stake === "") {
+          setShowAlert(true);
+          setTimeout(() => {
+            setShowAlert(false);
+          }, 3000);
+          resolve();
+        } else {
+          setResult(betcruncher.calculator(betslip, runners));
+          resolve();
+        }
+      } else {
+        reject();
+      }
+    });
+  };
+
   return (
-    <>
-      <Fab color="secondary" variant="extended" aria-label="calc" sx={{ position: "fixed", top: 50 }}>
-        <CalculateIcon sx={{ mr: 1 }} />
-        Calculate
-      </Fab>
-      <Container maxWidth="lg">
-        <Header setOddsFormat={setOddsFormat} />
+    <Container maxWidth>
+        <Header setOddsFormat={setOddsFormat} handleFabClick={handleFabClick} />
+
+      <Container id="main-container" maxWidth="lg">
         <Calculator
           betslip={betslip}
-          setBetslip={setBetslip}
           oddsFormat={oddsFormat}
           stake={stake}
           position={position}
+          terms={terms}
           numSelections={numSelections}
           error={error}
+          setBetslip={setBetslip}
           onStakeChange={handleStakeChange}
           onTypeChange={handleTypeChange}
           onPositionChange={handlePositionChange}
@@ -144,11 +173,17 @@ function App() {
           onFractionalChange={handleFractionalOddsChange}
         />
 
+        <Grow in={showAlert}>
+          <Alert severity="error" sx={{ position: "fixed", top: 10, left: 500 }}>
+            Please enter a stake
+          </Alert>
+        </Grow>
+
         <Grid id="betslip-container" item sm={12}>
-          <Betslip betslip={betslip} runners={runners} />
+          <Betslip handleFabClick={handleFabClick} result={result} />
         </Grid>
       </Container>
-    </>
+    </Container>
   );
 }
 

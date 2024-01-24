@@ -86,14 +86,14 @@ const betTypeDescriptions = {
   },
 };
 
-const Calculator = ({ oddsFormat, betslip, setBetslip, stake, position, numSelections, error, onStakeChange, onTypeChange, onPositionChange, onTermsChange, onDecimalChange, onFractionalChange }) => {
+const Calculator = ({ oddsFormat, betslip, setBetslip, stake, position, terms, numSelections, error, onStakeChange, onTypeChange, onPositionChange, onTermsChange, onDecimalChange, onFractionalChange }) => {
   return (
-    <Grid container spacing={2} sx={{ my: 1, height: { md: 850, sm: 1400 } }}>
+    <Grid container spacing={2} sx={{ my: 1, height: { md: 800, sm: 1400 } }}>
       <Grid item xs={12}>
         <Grid container direction="row" spacing={2}>
-          <Grid item sm={12} md={6} sx={{ display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center" }}>
+          <Grid item xs={12} sm={12} md={6} sx={{ display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center" }}>
             <FormControl>
-              <Box sx={{ minWidth: 200, display: "flex", flexDirection: "column", alignItems: "center" }}>
+              <Box sx={{ display: "flex", flexDirection: "column", alignItems: "center" }}>
                 <TextField
                   variant="standard"
                   type="amount"
@@ -149,7 +149,7 @@ const Calculator = ({ oddsFormat, betslip, setBetslip, stake, position, numSelec
             </FormControl>
           </Grid>
 
-          <Grid item sm={12} md={6} sx={{ display: "flex", flexDirection: "row", justifyContent: "center" }}>
+          <Grid item xs={12} sm={12} md={6} sx={{ display: "flex", flexDirection: "row", justifyContent: "center" }}>
             <Box id="bet-info-container" sx={{ m: 2, p: 1, display: "flex", flexDirection: "row", alignItems: "center", justifyContent: "center", textAlign: "center", width: { md: 400, sm: 600 } }}>
               <Card
                 sx={{
@@ -214,7 +214,7 @@ const Calculator = ({ oddsFormat, betslip, setBetslip, stake, position, numSelec
                         </Grid>
                         <Grid item>
                           <FormControl>
-                            <Select variant="standard" sx={{ minWidth: "100px", my: 1 }} value={position[index] !== undefined ? position[index] : 1} onChange={(event) => onPositionChange(index, parseInt(event.target.value, 10))}>
+                            <Select variant="standard"  sx={{ minWidth: "100px", my: 1 }} value={position[index] !== undefined ? position[index] : 1} onChange={(event) => onPositionChange(index, parseInt(event.target.value, 10))}>
                               <MenuItem value={1}>Won</MenuItem>
                               <MenuItem value={2}>Placed</MenuItem>
                               <MenuItem value={0}>Lost</MenuItem>
@@ -243,7 +243,7 @@ const Calculator = ({ oddsFormat, betslip, setBetslip, stake, position, numSelec
                         </Grid>
                         <Grid item>
                           <FormControl>
-                            <Select variant="standard" value={"1/4"} onChange={(event) => onTermsChange(index, event.target.value)} disabled={!betslip.eachWay}>
+                            <Select variant="standard" value={terms} onChange={(event) => onTermsChange(index, event.target.value)} disabled={!betslip.eachWay}>
                               <MenuItem value={"1/1"}>1/1</MenuItem>
                               <MenuItem value={"1/2"}>1/2</MenuItem>
                               <MenuItem value={"1/3"}>1/3</MenuItem>
