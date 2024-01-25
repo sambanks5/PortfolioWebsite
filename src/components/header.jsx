@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Fab, Drawer, ToggleButton, ToggleButtonGroup, ButtonGroup, Button, Typography, Box } from "@mui/material";
+import { Drawer, ToggleButton, ToggleButtonGroup, ButtonGroup, Button, Typography, Box } from "@mui/material";
 import Link from "@mui/material/Link";
 import IconButton from "@mui/material/IconButton";
 import GitHubIcon from "@mui/icons-material/GitHub";
@@ -19,9 +19,6 @@ const Header = ({ oddsFormat, setOddsFormat, handleFabClick }) => {
   return (
     <Box sx={{ position: "sticky", top: "10px", right: "10px", display: "flex", flexDirection: "row", justifyContent: "space-between", alignItems: "center" }}>
       BetCalc.io
-      {/* <Fab color="secondary" variant="extended" aria-label="add" >
-        </Fab> */}
-      {/*  */}
       <ButtonGroup variant="text" aria-label="text button group" sx={{background: "#114036"}}>
         <Button onClick={handleDrawerOpen}>
           Preferences
@@ -37,6 +34,7 @@ const Header = ({ oddsFormat, setOddsFormat, handleFabClick }) => {
           <Typography variant="h4" sx={{ mb: 2 }}>
             Options
           </Typography>
+          <Typography variant="h5">Odds Format</Typography>
           <ToggleButtonGroup
             value={oddsFormat}
             size="small"
@@ -50,6 +48,7 @@ const Header = ({ oddsFormat, setOddsFormat, handleFabClick }) => {
             sx={{ width: 150 }}>
             <ToggleButton value="fractional">Fractional</ToggleButton>
             <ToggleButton value="decimal">Decimal</ToggleButton>
+            <ToggleButton value="american">American</ToggleButton>
           </ToggleButtonGroup>
           <Box sx={{ p: 2, position: "absolute", bottom: 0, display: "flex", flexDirection: "column", alignItems: "center" }}>
             <Typography variant="h5">Sam Banks 2024</Typography>

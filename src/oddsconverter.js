@@ -165,6 +165,7 @@ module.exports = (function () {
         converted = {
             originalFormat: whichFormatIs(odds)
         };
+        console.log(converted);
 
         switch (converted.originalFormat) {
         case "fractional":
