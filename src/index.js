@@ -48,7 +48,6 @@ const theme = createTheme({
     // other typography styles...
   },
   components: {
-    
     MuiTextField: {
       styleOverrides: {
         root: {
@@ -73,8 +72,6 @@ const theme = createTheme({
       styleOverrides: {
         root: {
           borderRadius: 15, // Set the border radius to your desired value
-          letterSpacing: '1px', // Add your desired letter spacing here
-
         },
       },
     },
@@ -82,7 +79,6 @@ const theme = createTheme({
       styleOverrides: {
         root: {
           borderRadius: 15, // Set the border radius to your desired value
-          
         },
       },
     },
