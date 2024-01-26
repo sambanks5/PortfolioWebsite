@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Drawer, ToggleButton, ToggleButtonGroup, ButtonGroup, Button, Typography, Box } from "@mui/material";
+import { Drawer, ToggleButton, ToggleButtonGroup, ButtonGroup, Button, Typography, Box, Divider } from "@mui/material";
 import Link from "@mui/material/Link";
 import IconButton from "@mui/material/IconButton";
 import GitHubIcon from "@mui/icons-material/GitHub";
@@ -31,10 +31,11 @@ const Header = ({ oddsFormat, setOddsFormat, handleFabClick }) => {
       </ButtonGroup>
       <Drawer anchor="right" open={drawerOpen} onClose={handleDrawerClose}>
         <Box sx={{ display: "flex", flexDirection: "column", alignItems: "center", p: 2 }}>
-          <Typography variant="h4" sx={{ mb: 2 }}>
+          <Typography variant="h4">
             Options
           </Typography>
-          <Typography variant="h5">Odds Format</Typography>
+          <Divider sx={{ width: "100%", my: 1 }} />
+          <Typography variant="h5" sx={{ mt: 2, mb: 1 }}>Odds Format</Typography>
           <ToggleButtonGroup
             value={oddsFormat}
             size="small"
@@ -50,6 +51,9 @@ const Header = ({ oddsFormat, setOddsFormat, handleFabClick }) => {
             <ToggleButton value="decimal">Decimal</ToggleButton>
             <ToggleButton value="american">American</ToggleButton>
           </ToggleButtonGroup>
+          <Typography variant="h5" sx={{ mt: 2, mb: 1 }}>Bonuses</Typography>
+
+
           <Box sx={{ p: 2, position: "absolute", bottom: 0, display: "flex", flexDirection: "column", alignItems: "center" }}>
             <Typography variant="h5">Sam Banks 2024</Typography>
 
