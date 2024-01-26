@@ -5,8 +5,10 @@ import IconButton from "@mui/material/IconButton";
 import GitHubIcon from "@mui/icons-material/GitHub";
 import CalculateIcon from "@mui/icons-material/Calculate";
 import TuneIcon from "@mui/icons-material/Tune";
+import CheckIcon from '@mui/icons-material/Check';
 
-const Header = ({ oddsFormat, setOddsFormat, handleFabClick }) => {
+
+const Header = ({ oddsFormat, setOddsFormat, showRule4, setShowRule4, handleFabClick }) => {
   const [drawerOpen, setDrawerOpen] = useState(false);
   const handleDrawerOpen = () => {
     setDrawerOpen(true);
@@ -19,7 +21,7 @@ const Header = ({ oddsFormat, setOddsFormat, handleFabClick }) => {
   return (
     <Box sx={{ position: "sticky", top: "10px", right: "10px", display: "flex", flexDirection: "row", justifyContent: "space-between", alignItems: "center" }}>
       BetCalc.io
-      <ButtonGroup variant="text" aria-label="text button group" sx={{background: "#114036"}}>
+      <ButtonGroup variant="text" aria-label="text button group" sx={{ background: "#114036" }}>
         <Button onClick={handleDrawerOpen}>
           Preferences
           <TuneIcon sx={{ ml: 1 }} />
@@ -51,6 +53,15 @@ const Header = ({ oddsFormat, setOddsFormat, handleFabClick }) => {
             <ToggleButton value="decimal">Decimal</ToggleButton>
             <ToggleButton value="american">American</ToggleButton>
           </ToggleButtonGroup>
+          <Typography variant="h5" sx={{ mt: 2, mb: 1 }}>Show Rule4</Typography>
+          <ToggleButton
+            value="check"
+            size="small"
+            selected={showRule4}
+            onChange={() => setShowRule4(!showRule4)}
+          >
+            <CheckIcon />
+          </ToggleButton>
           <Typography variant="h5" sx={{ mt: 2, mb: 1 }}>Bonuses</Typography>
 
 

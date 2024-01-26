@@ -5,7 +5,7 @@ import { betTypes } from "../betcruncher";
 const types = Object.keys(betTypes);
 
 
-const Calculator = ({ betTypeDescriptions, oddsFormat, betslip, setBetslip, stake, position, terms, numSelections, error, onStakeChange, onTypeChange, onPositionChange, onTermsChange, onDecimalChange, onFractionalChange, onAmericanChange }) => {
+const Calculator = ({ betTypeDescriptions, oddsFormat, showRule4, betslip, setBetslip, stake, position, terms, numSelections, error, onStakeChange, onTypeChange, onPositionChange, onTermsChange, onDecimalChange, onFractionalChange, onAmericanChange }) => {
    const [oddsSign, setOddsSign] = useState("positive");
 
    const handleOddsSignChange = (event, newOddsSign) => {
@@ -137,7 +137,7 @@ const Calculator = ({ betTypeDescriptions, oddsFormat, betslip, setBetslip, stak
                               component="div">
                               {betslip.type.charAt(0).toUpperCase() + betslip.type.slice(1)}
                            </Typography>
-                           
+
                            <Typography
                               variant="body2"
                               color="text.secondary">
@@ -156,7 +156,7 @@ const Calculator = ({ betTypeDescriptions, oddsFormat, betslip, setBetslip, stak
                   container
                   spacing={0}
                   id="Yes"
-                  sx={{ maxWidth: 800 }}>
+                  sx={{ maxWidth: 950 }}>
                   <TransitionGroup
                      component={Grid}
                      container
@@ -193,15 +193,16 @@ const Calculator = ({ betTypeDescriptions, oddsFormat, betslip, setBetslip, stak
                                     <Grid item>
                                        <Typography
                                           variant="h3"
-                                          sx={{ p: 2 }}>
+                                          sx={{ p: 1 }}>
                                           #{index + 1}
                                        </Typography>
                                     </Grid>
-                                    <Grid item>
+                                    <Divider orientation="vertical" sx={{ mr: 1 }} />
+                                    <Grid item sx={{ display: "flex", flexDirection: "column", alignItems: "center" }}>
                                        <FormControl>
                                           <Select
                                              variant="standard"
-                                             sx={{ minWidth: "80px", my: 1, textAlign: "center" }}
+                                             sx={{ minWidth: "80px", mx: 1, textAlign: "center" }}
                                              value={position[index] !== undefined ? position[index] : 1}
                                              onChange={(event) => onPositionChange(index, parseInt(event.target.value, 10))}>
                                              <MenuItem value={1}>Won</MenuItem>
@@ -210,10 +211,46 @@ const Calculator = ({ betTypeDescriptions, oddsFormat, betslip, setBetslip, stak
                                              <MenuItem value={-1}>Void</MenuItem>
                                           </Select>
                                        </FormControl>
+                                       {showRule4 && (
+                                          <Grid item>
+                                             <FormControl>
+                                                <Select
+                                                   variant="standard"
+                                                   displayEmpty
+                                                   value={rule4Deduction[index] !== undefined ? rule4Deduction[index] : 0}
+                                                   sx={{ minWidth: "60px", mx: 1, textAlign: "center" }}
+                                                >
+                                                   <MenuItem value="" disabled>
+                                                      Rule 4
+                                                   </MenuItem>
+                                                   <MenuItem value={0}>0%</MenuItem>
+                                                   <MenuItem value={0.05}>5%</MenuItem>
+                                                   <MenuItem value={0.1}>10%</MenuItem>
+                                                   <MenuItem value={0.15}>15%</MenuItem>
+                                                   <MenuItem value={0.2}>20%</MenuItem>
+                                                   <MenuItem value={0.25}>25%</MenuItem>
+                                                   <MenuItem value={0.3}>30%</MenuItem>
+                                                   <MenuItem value={0.35}>35%</MenuItem>
+                                                   <MenuItem value={0.4}>40%</MenuItem>
+                                                   <MenuItem value={0.45}>45%</MenuItem>
+                                                   <MenuItem value={0.5}>50%</MenuItem>
+                                                   <MenuItem value={0.55}>55%</MenuItem>
+                                                   <MenuItem value={0.6}>60%</MenuItem>
+                                                   <MenuItem value={0.65}>65%</MenuItem>
+                                                   <MenuItem value={0.7}>70%</MenuItem>
+                                                   <MenuItem value={0.75}>75%</MenuItem>
+                                                   <MenuItem value={0.8}>80%</MenuItem>
+                                                   <MenuItem value={0.85}>85%</MenuItem>
+                                                   <MenuItem value={0.9}>90%</MenuItem>
+                                                   <MenuItem value={0.95}>95%</MenuItem>
+                                                </Select>
+                                             </FormControl>
+                                          </Grid>
+                                       )}
                                     </Grid>
                                     <Grid
                                        item
-                                       sx={{ minWidth: "150px", display: "flex", justifyContent: "center" }}>
+                                       sx={{ display: "flex", justifyContent: "center" }}>
                                        {oddsFormat === "decimal" ? (
                                           <TextField
                                              variant="standard"
@@ -235,7 +272,7 @@ const Calculator = ({ betTypeDescriptions, oddsFormat, betslip, setBetslip, stak
                                                    variant="standard"
                                                    type="number"
                                                    defaultValue="1"
-                                                   sx={{ width: "40px", mb: 1.5 }}
+                                                   sx={{ width: "35px", mb: 1.5 }}
                                                    inputProps={{ style: { textAlign: "center" } }}
                                                    onChange={(event) => onFractionalChange(index, "numerator", event.target.value)}
                                                 />
@@ -252,7 +289,7 @@ const Calculator = ({ betTypeDescriptions, oddsFormat, betslip, setBetslip, stak
                                                    variant="standard"
                                                    type="number"
                                                    defaultValue="1"
-                                                   sx={{ width: "40px", mt: 1.5 }}
+                                                   sx={{ width: "35px", mt: 1.5 }}
                                                    inputProps={{ style: { textAlign: "center" } }}
                                                    onChange={(event) => onFractionalChange(index, "denominator", event.target.value)}
                                                 />

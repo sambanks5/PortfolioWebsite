@@ -91,22 +91,28 @@ function App() {
          numBets: 255,
       },
    };
+
+   // Betslip
    const [betslip, setBetslip] = useState({
       stake: "",
       type: "single",
       eachWay: false,
    });
-   // State Variables
+   // Runners Array
+   const [runners, setRunners] = useState([]);
+
+   // Other State Variables
    const [result, setResult] = useState(null);
    const [stake, setStake] = useState("");
-   const [runners, setRunners] = useState([]);
    const [error, setError] = useState(false);
    const [oddsFormat, setOddsFormat] = useState("fractional");
+   const [showRule4, setShowRule4] = useState(false);
    const [numSelections, setNumSelections] = useState(betTypes[betslip.type]?.selections || 0);
    const [terms, setTerms] = useState(Array(numSelections).fill("1/4"));
    const [position, setPosition] = useState(Array(betslip.selections).fill(1));
    const betslipRef = React.useRef(null);
 
+   // No Idea
    const [key, setKey] = React.useState(0);
 
    // Errors
@@ -285,6 +291,9 @@ function App() {
    return (
       <Container maxWidth>
          <Header
+            oddsFormat={oddsFormat}
+            showRule4={showRule4}
+            setShowRule4={setShowRule4}
             setOddsFormat={setOddsFormat}
             handleFabClick={handleFabClick}
          />
@@ -296,6 +305,7 @@ function App() {
                betslip={betslip}
                betTypeDescriptions={betTypeDescriptions}
                oddsFormat={oddsFormat}
+               showRule4={showRule4}
                stake={stake}
                position={position}
                terms={terms}
