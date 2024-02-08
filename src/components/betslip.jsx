@@ -2,7 +2,7 @@ import React from "react";
 import { Typography, Box, Card, Divider, Grow, Fab } from "@mui/material";
 import CalculateIcon from "@mui/icons-material/Calculate";
 
-const Betslip = React.forwardRef(({ handleFabClick, result, key }, ref) => {
+const Betslip = React.forwardRef(({ handleFabClick, result }, ref) => {
    return (
       <Card
          ref={ref}

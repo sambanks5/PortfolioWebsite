@@ -6,6 +6,7 @@ import ErrorMessage from "./components/error";
 import "./App.css";
 import { Container, Grid } from "@mui/material";
 import { calculator, betTypes } from "./betcruncher";
+import oddsconverter from "./oddsconverter.js";
 
 function App() {
    const oddsConverter = require("./oddsconverter.js");
@@ -106,6 +107,7 @@ function App() {
    const [stake, setStake] = useState("");
    const [error, setError] = useState(false);
    const [oddsFormat, setOddsFormat] = useState("fractional");
+   const [rule4Deduction, setRule4Deduction] = React.useState([]);
    const [showRule4, setShowRule4] = useState(false);
    const [numSelections, setNumSelections] = useState(betTypes[betslip.type]?.selections || 0);
    const [terms, setTerms] = useState(Array(numSelections).fill("1/4"));
@@ -119,39 +121,42 @@ function App() {
    const [showAmericanOddsError, setShowAmericanOddsError] = useState(false);
    const [showStakeAlert, setShowStakeAlert] = useState(false);
 
-   console.log(runners);
 
    const initializeRunners = (numSelections) => {
       setRunners((prevRunners) => {
-         if (numSelections > prevRunners.length) {
-            const newRunners = [...prevRunners];
-            for (let i = prevRunners.length; i < numSelections; i++) {
-               newRunners.push({ odds: "1/1", terms: "1/4", position: 1 });
-            }
-            setPosition((prevPosition) => [...prevPosition, ...new Array(numSelections - prevPosition.length).fill(1)]);
-            return newRunners;
-         } else if (numSelections < prevRunners.length) {
-            setPosition((prevPosition) => prevPosition.slice(0, numSelections));
-            return prevRunners.slice(0, numSelections);
-         } else {
-            return prevRunners;
-         }
+        const newRunners = [...prevRunners];
+        for (let i = 0; i < numSelections; i++) {
+          if (i >= newRunners.length) {
+            // Add new runner
+            newRunners.push({ odds: "1/1", terms: "1/4", position: 1 });
+          } else {
+            // Convert odds for existing runner
+            const convertedOdds = oddsConverter(newRunners[i].odds)[oddsFormat];
+            newRunners[i].odds = convertedOdds;
+          }
+        }
+        setPosition((prevPosition) => {
+          const additionalPositions = numSelections - prevPosition.length;
+          return [...prevPosition, ...new Array(additionalPositions > 0 ? additionalPositions : 0).fill(1)];
+        });
+        return newRunners.slice(0, numSelections);
       });
-
+    
       setTerms((prevTerms) => {
-         if (numSelections > prevTerms.length) {
-            return [...prevTerms, ...new Array(numSelections - prevTerms.length).fill("1/4")];
-         } else if (numSelections < prevTerms.length) {
-            return prevTerms.slice(0, numSelections);
-         } else {
-            return prevTerms;
-         }
+        const additionalTerms = numSelections - prevTerms.length;
+        if (additionalTerms > 0) {
+          return [...prevTerms, ...new Array(additionalTerms).fill("1/4")];
+        } else if (additionalTerms < 0) {
+          return prevTerms.slice(0, numSelections);
+        } else {
+          return prevTerms;
+        }
       });
-   };
-
-   useEffect(() => {
+    };
+    
+    useEffect(() => {
       initializeRunners(numSelections);
-   }, [numSelections]);
+    }, [oddsFormat, numSelections]);
 
    const handleTypeChange = (event) => {
       const type = event.target.value;
@@ -247,6 +252,13 @@ function App() {
       });
    };
 
+   const handleRule4DeductionChange = (index, newValue) => {
+      setRule4Deduction(prevRule4Deduction => {
+        const newRule4Deduction = [...prevRule4Deduction];
+        newRule4Deduction[index] = newValue;
+        return newRule4Deduction;
+      });
+    };
    useEffect(() => {
       setRunners((prevRunners) => {
          return prevRunners.map((runner, index) => {
@@ -274,19 +286,39 @@ function App() {
   };
 
   const calculateResult = () => {
-	console.log("betslip:", betslip);
-	if (betslip && typeof betslip === "object" && betslip !== null && "type" in betslip && "eachWay" in betslip) {
-	  if (stake === 0 || stake === "") {
-		setShowStakeAlert(true);
-		setTimeout(() => {
-		  setShowStakeAlert(false);
-		}, 3000);
-		return;
-	  } else {
-		return calculator(betslip, runners);
-	  }
-	}
-  };
+   if (betslip && typeof betslip === "object" && betslip !== null && "type" in betslip && "eachWay" in betslip) {
+     if (stake === 0 || stake === "") {
+       setShowStakeAlert(true);
+       setTimeout(() => {
+         setShowStakeAlert(false);
+       }, 3000);
+       return;
+     } else {
+       // Apply Rule 4 deductions to each runner's odds
+       const runnersWithDeductions = runners.map((runner, index) => {
+         const deduction = rule4Deduction[index];
+         return {
+           ...runner,
+           odds: formatOdds(runner.odds, deduction),
+         };
+       });
+       console.log(runnersWithDeductions);
+       return calculator(betslip, runnersWithDeductions);
+     }
+   }
+ };
+ 
+
+ const formatOdds = (odds, deduction = 0) => {
+   // Convert the odds to decimal format
+   const convertedOdds = oddsConverter(odds).decimal;
+ 
+   const winnings = convertedOdds - 1; // winnings are odds minus stake
+   const deductionApplied = winnings - (winnings * deduction);
+ 
+   // Add the stake back to get the final odds
+   return 1 + deductionApplied;
+ };
 
    return (
       <Container maxWidth>
@@ -302,10 +334,12 @@ function App() {
             id="inner-container"
             maxWidth="lg">
             <Calculator
+               runners={runners}
                betslip={betslip}
                betTypeDescriptions={betTypeDescriptions}
                oddsFormat={oddsFormat}
                showRule4={showRule4}
+               rule4Deduction={rule4Deduction}
                stake={stake}
                position={position}
                terms={terms}
@@ -314,6 +348,7 @@ function App() {
                setBetslip={setBetslip}
                onStakeChange={handleStakeChange}
                onTypeChange={handleTypeChange}
+               onRule4Change={handleRule4DeductionChange}
                onPositionChange={handlePositionChange}
                onTermsChange={handlePlaceTermsChange}
                onDecimalChange={handleOddsChange}

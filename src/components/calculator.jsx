@@ -4,8 +4,7 @@ import { TransitionGroup } from "react-transition-group";
 import { betTypes } from "../betcruncher";
 const types = Object.keys(betTypes);
 
-
-const Calculator = ({ betTypeDescriptions, oddsFormat, showRule4, betslip, setBetslip, stake, position, terms, numSelections, error, onStakeChange, onTypeChange, onPositionChange, onTermsChange, onDecimalChange, onFractionalChange, onAmericanChange }) => {
+const Calculator = ({ runners, betTypeDescriptions, oddsFormat, showRule4, rule4Deduction, onRule4Change, betslip, setBetslip, stake, position, terms, numSelections, error, onStakeChange, onTypeChange, onPositionChange, onTermsChange, onDecimalChange, onFractionalChange, onAmericanChange }) => {
    const [oddsSign, setOddsSign] = useState("positive");
 
    const handleOddsSignChange = (event, newOddsSign) => {
@@ -197,8 +196,13 @@ const Calculator = ({ betTypeDescriptions, oddsFormat, showRule4, betslip, setBe
                                           #{index + 1}
                                        </Typography>
                                     </Grid>
-                                    <Divider orientation="vertical" sx={{ mr: 1 }} />
-                                    <Grid item sx={{ display: "flex", flexDirection: "column", alignItems: "center" }}>
+                                    <Divider
+                                       orientation="vertical"
+                                       sx={{ mr: 1 }}
+                                    />
+                                    <Grid
+                                       item
+                                       sx={{ display: "flex", flexDirection: "column", alignItems: "center" }}>
                                        <FormControl>
                                           <Select
                                              variant="standard"
@@ -218,9 +222,11 @@ const Calculator = ({ betTypeDescriptions, oddsFormat, showRule4, betslip, setBe
                                                    variant="standard"
                                                    displayEmpty
                                                    value={rule4Deduction[index] !== undefined ? rule4Deduction[index] : 0}
-                                                   sx={{ minWidth: "60px", mx: 1, textAlign: "center" }}
-                                                >
-                                                   <MenuItem value="" disabled>
+                                                   onChange={(event) => onRule4Change(index, event.target.value)}
+                                                   sx={{ minWidth: "60px", mx: 1, textAlign: "center" }}>
+                                                   <MenuItem
+                                                      value=""
+                                                      disabled>
                                                       Rule 4
                                                    </MenuItem>
                                                    <MenuItem value={0}>0%</MenuItem>
@@ -255,7 +261,7 @@ const Calculator = ({ betTypeDescriptions, oddsFormat, showRule4, betslip, setBe
                                           <TextField
                                              variant="standard"
                                              type="number"
-                                             defaultValue="2.0"
+                                             value={runners[index].odds}
                                              onChange={(event) => onDecimalChange(index, event.target.value)}
                                              onBlur={(event) => (event.target.value = parseFloat(event.target.value).toFixed(1))}
                                              sx={{ width: "70px" }}
@@ -271,7 +277,7 @@ const Calculator = ({ betTypeDescriptions, oddsFormat, showRule4, betslip, setBe
                                                 <TextField
                                                    variant="standard"
                                                    type="number"
-                                                   defaultValue="1"
+                                                   value={runners[index] && runners[index].fractionalOdds ? runners[index].fractionalOdds.numerator : ""}
                                                    sx={{ width: "35px", mb: 1.5 }}
                                                    inputProps={{ style: { textAlign: "center" } }}
                                                    onChange={(event) => onFractionalChange(index, "numerator", event.target.value)}
@@ -288,7 +294,7 @@ const Calculator = ({ betTypeDescriptions, oddsFormat, showRule4, betslip, setBe
                                                 <TextField
                                                    variant="standard"
                                                    type="number"
-                                                   defaultValue="1"
+                                                   value={runners[index] && runners[index].fractionalOdds ? runners[index].fractionalOdds.denominator : ""}
                                                    sx={{ width: "35px", mt: 1.5 }}
                                                    inputProps={{ style: { textAlign: "center" } }}
                                                    onChange={(event) => onFractionalChange(index, "denominator", event.target.value)}

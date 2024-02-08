@@ -23,7 +23,7 @@ const Header = ({ oddsFormat, setOddsFormat, showRule4, setShowRule4, handleFabC
       BetCalc.io
       <ButtonGroup variant="text" aria-label="text button group" sx={{ background: "#114036" }}>
         <Button onClick={handleDrawerOpen}>
-          Preferences
+          Settings
           <TuneIcon sx={{ ml: 1 }} />
         </Button>
         <Button onClick={handleFabClick}>
