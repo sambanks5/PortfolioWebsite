@@ -10,7 +10,7 @@ const Calculator = ({ runners, betTypeDescriptions, oddsFormat, showRule4, rule4
    const handleOddsSignChange = (event, newOddsSign) => {
       setOddsSign(newOddsSign);
    };
-
+   console.log(runners);
    return (
       <Grid
          container
@@ -261,9 +261,12 @@ const Calculator = ({ runners, betTypeDescriptions, oddsFormat, showRule4, rule4
                                           <TextField
                                              variant="standard"
                                              type="number"
-                                             value={runners[index].odds}
+                                             value={runners[index]?.odds || ''}
                                              onChange={(event) => onDecimalChange(index, event.target.value)}
-                                             onBlur={(event) => (event.target.value = parseFloat(event.target.value).toFixed(1))}
+                                             onBlur={(event) => {
+                                                const value = parseFloat(event.target.value);
+                                                event.target.value = isNaN(value) ? '' : value.toFixed(1);
+                                             }}
                                              sx={{ width: "70px" }}
                                              inputProps={{ style: { textAlign: "center" } }}
                                           />
