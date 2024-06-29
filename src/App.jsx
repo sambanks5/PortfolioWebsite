@@ -194,43 +194,90 @@ function App() {
       });
    }, [position]);
 
+
+
    const handleDecimalOddsChange = (index, value) => {
-      if (!value) {
-        return;
-      }
-    
+      console.log(value);
       setRunners((prevRunners) => {
-        const newRunners = [...prevRunners];
-        try {
-          const decimalOdds = oddsConverter(value).decimal;
-          newRunners[index] = { ...newRunners[index], odds: decimalOdds };
-        } catch (error) {
-          setShowDecimalOddsError(true);
-        }
-        return newRunners;
-      });
-    };
-
-   // FRACTIONAL ODDS CHANGE HANDLER
-   const handleFractionalOddsChange = (index, part, value) => {
-      if (!value) {
-         return;
-      }
-
-      setRunners((prevRunners) => {
-         const newRunners = [...prevRunners];
-         let currentOdds = newRunners[index].fractionalOdds || { numerator: "1", denominator: "1" };
-         if (part === "numerator") {
-            currentOdds.numerator = value;
-         } else if (part === "denominator") {
-            currentOdds.denominator = value;
-         }
-         const fractionalOdds = `${currentOdds.numerator}/${currentOdds.denominator}`;
-         const decimalOdds = oddsConverter(fractionalOdds).decimal;
-         newRunners[index] = { ...newRunners[index], odds: decimalOdds, fractionalOdds: currentOdds };
-         return newRunners;
+          const newRunners = [...prevRunners];
+          // Temporarily store the decimal odds value, allowing empty values
+          newRunners[index] = { ...newRunners[index], tempDecimalOdds: value };
+          console.log(newRunners);
+          return newRunners;
       });
    };
+
+     // FRACTIONAL ODDS CHANGE HANDLER
+     const handleFractionalOddsChange = (index, part, value) => {
+      setRunners((prevRunners) => {
+          const newRunners = [...prevRunners];
+          let currentOdds = newRunners[index].fractionalOdds || { numerator: "1", denominator: "1" };
+          if (part === "numerator") {
+              currentOdds.numerator = value;
+          } else if (part === "denominator") {
+              currentOdds.denominator = value;
+          }
+          // Temporarily store the possibly invalid fractional odds without converting
+          newRunners[index] = { ...newRunners[index], fractionalOdds: currentOdds };
+          console.log(newRunners);
+          return newRunners;
+      });
+   };
+  // Validate and convert on blur, handling empty strings
+  const handleDecimalOddsBlur = (index) => {
+      setRunners((prevRunners) => {
+          const newRunners = [...prevRunners];
+          let tempDecimalOdds = newRunners[index].tempDecimalOdds.trim();
+  
+          // Handle empty input by setting a default value or showing an error
+          if (tempDecimalOdds === "") {
+              // Option 1: Set a default value
+              tempDecimalOdds = "2"; // Default valid value
+              // Option 2: Show an error message (not implemented here)
+          } else {
+              tempDecimalOdds = parseFloat(tempDecimalOdds);
+              if (isNaN(tempDecimalOdds) || tempDecimalOdds <= 1) {
+                  tempDecimalOdds = 2; // Default valid value or some validation logic
+              }
+          }
+  
+          try {
+              // Assuming oddsConverter can handle decimal odds conversion/validation
+              const decimalOdds = oddsConverter(tempDecimalOdds.toString()).decimal;
+              newRunners[index] = { ...newRunners[index], odds: decimalOdds };
+          } catch (error) {
+              console.error("Error converting decimal odds:", error);
+              // Handle the error appropriately (e.g., show an error message to the user)
+          }
+          return newRunners;
+      });
+   };
+
+
+  
+  // Updated handleBlur to correct invalid inputs and then convert odds
+  const handleFractionalOddsBlur = (index, part) => {
+      setRunners((prevRunners) => {
+          const newRunners = [...prevRunners];
+          let currentOdds = newRunners[index].fractionalOdds || { numerator: "1", denominator: "1" };
+          // Correct invalid inputs
+          if (part === "numerator" && (currentOdds.numerator === "" || currentOdds.numerator === "0")) {
+              currentOdds.numerator = "1";
+          } else if (part === "denominator" && (currentOdds.denominator === "" || currentOdds.denominator === "0")) {
+              currentOdds.denominator = "1";
+          }
+          // Now that inputs are valid, perform conversion
+          const fractionalOdds = `${currentOdds.numerator}/${currentOdds.denominator}`;
+          try {
+              const decimalOdds = oddsConverter(fractionalOdds).decimal;
+              newRunners[index] = { ...newRunners[index], odds: decimalOdds, fractionalOdds: currentOdds };
+          } catch (error) {
+              console.error("Error converting odds:", error);
+              // Handle the error appropriately (e.g., show an error message to the user)
+          }
+          return newRunners;
+      });
+  };
 
    // AMERICAN ODDS CHANGE HANDLER
    const handleAmericanOddsChange = (index, value) => {
@@ -365,7 +412,9 @@ function App() {
                onPositionChange={handlePositionChange}
                onTermsChange={handlePlaceTermsChange}
                onDecimalChange={handleDecimalOddsChange}
+               onDecimalOddsBlur={handleDecimalOddsBlur}
                onFractionalChange={handleFractionalOddsChange}
+               onFractionalOddsBlur={handleFractionalOddsBlur}
                onAmericanChange={handleAmericanOddsChange}
             />
 

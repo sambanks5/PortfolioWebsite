@@ -4,7 +4,7 @@ import { TransitionGroup } from "react-transition-group";
 import { betTypes } from "../betcruncher";
 const types = Object.keys(betTypes);
 
-const Calculator = ({ runners, betTypeDescriptions, oddsFormat, showRule4, rule4Deduction, onRule4Change, betslip, setBetslip, stake, position, terms, numSelections, error, onStakeChange, onTypeChange, onPositionChange, onTermsChange, onDecimalChange, onFractionalChange, onAmericanChange }) => {
+const Calculator = ({ runners, betTypeDescriptions, oddsFormat, showRule4, rule4Deduction, onRule4Change, betslip, setBetslip, stake, position, terms, numSelections, error, onStakeChange, onTypeChange, onPositionChange, onTermsChange, onDecimalChange, onDecimalOddsBlur, onFractionalChange, onFractionalOddsBlur, onAmericanChange }) => {
    const [oddsSign, setOddsSign] = useState("positive");
 
    const handleOddsSignChange = (event, newOddsSign) => {
@@ -261,14 +261,11 @@ const Calculator = ({ runners, betTypeDescriptions, oddsFormat, showRule4, rule4
                                           <TextField
                                              variant="standard"
                                              type="number"
-                                             value={runners[index]?.odds || ''}
-                                             onChange={(event) => onDecimalChange(index, event.target.value)}
-                                             onBlur={(event) => {
-                                                const value = parseFloat(event.target.value);
-                                                event.target.value = isNaN(value) ? '' : value.toFixed(1);
-                                             }}
+                                             value={runners[index]?.tempDecimalOdds || runners[index]?.odds || ""}
                                              sx={{ width: "70px" }}
                                              inputProps={{ style: { textAlign: "center" } }}
+                                             onChange={(event) => onDecimalChange(index, event.target.value)}
+                                             onBlur={() => onDecimalOddsBlur(index)}
                                           />
                                        ) : oddsFormat === "fractional" ? (
                                           <Grid
@@ -284,6 +281,7 @@ const Calculator = ({ runners, betTypeDescriptions, oddsFormat, showRule4, rule4
                                                    sx={{ width: "35px", mb: 1.5 }}
                                                    inputProps={{ style: { textAlign: "center" } }}
                                                    onChange={(event) => onFractionalChange(index, "numerator", event.target.value)}
+                                                   onBlur={() => onFractionalOddsBlur(index, "numerator")}
                                                 />
                                              </Grid>
                                              <Grid item>
@@ -301,6 +299,7 @@ const Calculator = ({ runners, betTypeDescriptions, oddsFormat, showRule4, rule4
                                                    sx={{ width: "35px", mt: 1.5 }}
                                                    inputProps={{ style: { textAlign: "center" } }}
                                                    onChange={(event) => onFractionalChange(index, "denominator", event.target.value)}
+                                                   onBlur={() => onFractionalOddsBlur(index, "denominator")}
                                                 />
                                              </Grid>
                                           </Grid>
