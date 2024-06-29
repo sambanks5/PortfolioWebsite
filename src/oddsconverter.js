@@ -165,7 +165,6 @@ module.exports = (function () {
         converted = {
             originalFormat: whichFormatIs(odds)
         };
-        console.log(converted);
 
         switch (converted.originalFormat) {
         case "fractional":
@@ -188,7 +187,6 @@ module.exports = (function () {
         default:
             throw new Error("Cannot fathom odds format");
         }
-        console.log(converted);
         return converted;
     };
 }());
