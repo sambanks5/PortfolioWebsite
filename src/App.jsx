@@ -1,10 +1,9 @@
 import React, { useState, useEffect, useRef } from "react";
 import GravityBackground from "./components/GravityBackground.jsx";
-import ProjectDisplay from "./components/ProjectDisplay.jsx";
 import LinkDisplay from "./components/TitleText.jsx";
 
 import { Container, Fade } from "@mui/material";
-import Box2D from "box2dweb"; // Correct import for Box2D
+import Box2D from "box2dweb";
 
 const projects = [
    { id: 2, name: "Bet Monitor", header: "", description: "Description for Project One\nWith multiple lines.", languages: ["JavaScript", "React"], github: "https://github.com/yourusername/bet-monitor" },
@@ -15,24 +14,19 @@ const projects = [
 
 function App() {
    const [selectedProjectId, setSelectedProjectId] = useState(null);
-   const [isModalOpen, setIsModalOpen] = useState(false);
    const [hoveredLink, setHoveredLink] = useState(null);
 
-   const worldRef = useRef(null); // Define worldRef
+   const worldRef = useRef(null);
 
    useEffect(() => {
       console.log("Selected Project ID:", selectedProjectId);
-      if (selectedProjectId !== null) {
-         setIsModalOpen(true);
-      }
    }, [selectedProjectId]);
 
    const selectedProject = projects.find(project => project.id === selectedProjectId);
 
-   const handleClose = () => {
-      setIsModalOpen(false);
-      setSelectedProjectId(null);
-      toggleGravity(true); // Turn gravity back on when modal is closed
+   const handleClick = (projectId) => {
+      setSelectedProjectId(projectId);
+      toggleGravity(true);
    };
 
    const toggleGravity = (isOn, direction = null) => {
@@ -69,16 +63,8 @@ function App() {
    return (
       <Fade in={true} timeout={500}>
          <Container maxWidth="True">
-            <GravityBackground setSelectedProject={setSelectedProjectId} toggleGravity={toggleGravity} setHoveredLink={setHoveredLink} worldRef={worldRef} />
-            <LinkDisplay hoveredLink={hoveredLink} />
-
-            {selectedProject && (
-               <ProjectDisplay
-                  project={selectedProject}
-                  open={isModalOpen}
-                  onClose={handleClose}
-               />
-            )}
+            <GravityBackground setSelectedProject={handleClick} toggleGravity={toggleGravity} setHoveredLink={setHoveredLink} worldRef={worldRef} />
+            <LinkDisplay hoveredLink={hoveredLink} project={selectedProject} onClick={() => handleClick(selectedProjectId)} />
          </Container>
       </Fade>
    );

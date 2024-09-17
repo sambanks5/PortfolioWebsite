@@ -3,8 +3,6 @@ import { Typography, Modal, Box, Chip, IconButton, useMediaQuery } from "@mui/ma
 import { FaReact, FaPython, FaHtml5, FaCss3Alt, FaGithub } from "react-icons/fa"; // Import icons from react-icons
 import { GrJs } from "react-icons/gr";
 import { SiMui } from "react-icons/si";
-import "slick-carousel/slick/slick.css";
-import "slick-carousel/slick/slick-theme.css";
 
 import betCalculatorGif from "../media/betCalculatorGif.gif";
 
