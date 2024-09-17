@@ -21,7 +21,7 @@ const theme = createTheme({
     },
   },
   typography: {
-    fontFamily: '"Bricolage Grotesque", sans-serif',
+    fontFamily: '"DM Sans", sans-serif',
     h1: {
       fontSize: 32,
     },

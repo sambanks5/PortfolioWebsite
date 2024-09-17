@@ -1,7 +1,6 @@
 import React from "react";
-import { Box, IconButton, Typography } from "@mui/material";
-import GitHubIcon from "@mui/icons-material/GitHub";
-import LinkedInIcon from "@mui/icons-material/LinkedIn";
+import { Box, Typography } from "@mui/material";
+
 
 const Header = () => {
   return (
