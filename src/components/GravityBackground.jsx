@@ -123,11 +123,11 @@ const GravityBackground = ({ setSelectedProject, toggleGravity, setHoveredLink, 
         const linkSpheres = [];
         const numLinkSpheres = 5; // Number of link spheres
         const projectLinks = [
-            { id: 1, url: "#", name: "Project 1" },
-            { id: 2, url: "#", name: "Project 2" },
-            { id: 3, url: "#", name: "Project 3" },
-            { id: 4, url: "#", name: "Project 4" },
-            { id: 5, url: "#", name: "Project 5" },
+            { id: 1, url: "#", name: "?" },
+            { id: 2, url: "#", name: "Bet Monitor" },
+            { id: 3, url: "#", name: "BetCalc" },
+            { id: 4, url: "#", name: "PlaysTV Scraper" },
+            { id: 5, url: "#", name: "Contact" },
         ];
 
         // When creating the link spheres, store the original color in userData
@@ -206,13 +206,14 @@ const GravityBackground = ({ setSelectedProject, toggleGravity, setHoveredLink, 
             mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
             raycaster.setFromCamera(mouse, camera);
             const intersects = raycaster.intersectObjects(linkSpheres);
-
+        
             if (intersects.length > 0) {
                 const intersectedObject = intersects[0].object;
                 if (hoveredObjectRef.current !== intersectedObject) {
                     setHoveredLink(intersectedObject.userData.projectId); // Update hovered link
                     setTooltipTitle(intersectedObject.userData.name); // Set tooltip title
                     setTooltipOpen(true); // Show tooltip
+                    document.body.style.cursor = 'pointer'; // Change cursor to pointer
                     if (hoveredObjectRef.current) {
                         // Change back to the original color
                         gsap.to(hoveredObjectRef.current.material.color, {
@@ -234,6 +235,7 @@ const GravityBackground = ({ setSelectedProject, toggleGravity, setHoveredLink, 
             } else {
                 setHoveredLink(null); // Clear hovered link
                 setTooltipOpen(false); // Hide tooltip
+                document.body.style.cursor = 'default'; // Change cursor back to default
                 if (hoveredObjectRef.current) {
                     // Change back to the original color
                     gsap.to(hoveredObjectRef.current.material.color, {
