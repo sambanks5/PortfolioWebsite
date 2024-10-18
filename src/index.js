@@ -65,21 +65,21 @@ const theme = createTheme({
     MuiOutlinedInput: {
       styleOverrides: {
         root: {
-          borderRadius: 15, // Set the border radius to your desired value
+          borderRadius: 15,
         },
       },
     },
     MuiButton: {
       styleOverrides: {
         root: {
-          borderRadius: 15, // Set the border radius to your desired value
+          borderRadius: 15, 
         },
       },
     },
     MuiPaper: {
       styleOverrides: {
         root: {
-          borderRadius: 15, // Set the border radius to your desired value
+          borderRadius: 15, 
         },
       },
     },

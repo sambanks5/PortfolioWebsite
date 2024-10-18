@@ -1,21 +1,20 @@
 import React, { useState, useEffect } from "react";
 import { Typography, Box, Fade, Chip } from "@mui/material";
-import { FaReact, FaPython, FaHtml5, FaCss3Alt, FaGithub } from "react-icons/fa"; // Import icons from react-icons
+import { FaReact, FaPython, FaHtml5, FaCss3Alt, FaGithub } from "react-icons/fa"; 
 import { GrJs } from "react-icons/gr";
 import { SiMui, SiSqlite } from "react-icons/si";
-import { useTheme } from "@mui/material/styles"; // Import useTheme
+import { useTheme } from "@mui/material/styles"; 
 
 const TitleText = ({ hoveredLink, project }) => {
   const [fade, setFade] = useState(false);
-  const theme = useTheme(); // Use theme for breakpoints
+  const theme = useTheme(); 
 
   useEffect(() => {
     setFade(false);
-    const timeout = setTimeout(() => setFade(true), 50); // Delay to trigger fade-out and then fade-in
+    const timeout = setTimeout(() => setFade(true), 50); 
     return () => clearTimeout(timeout);
   }, [hoveredLink, project]);
 
-  // Map hovered link to the title
   const linkTitle = {
     1: "Gravity",
     2: "Bet Monitor",
@@ -24,7 +23,7 @@ const TitleText = ({ hoveredLink, project }) => {
     5: "Contact",
   };
 
-  // Define colors for each project
+  // colors for each project
   const projectColors = {
     2: "#ff0000", // Bet Monitor - Red
     3: "#00ff00", // Bet Calculator - Green
@@ -32,7 +31,6 @@ const TitleText = ({ hoveredLink, project }) => {
     5: "#ffff00", // Contact - Yellow
   };
 
-  // Map languages to icons with colors and larger size
   const languageIcons = {
     JavaScript: <GrJs style={{ color: "#f0db4f", fontSize: "1.5em" }} />, // JavaScript yellow
     React: <FaReact style={{ color: "#61dafb", fontSize: "1.5em" }} />, // React blue
@@ -74,7 +72,7 @@ const TitleText = ({ hoveredLink, project }) => {
             key={hoveredLink}
             sx={{ color: "black", fontSize: 40, [theme.breakpoints.down('sm')]: { fontSize: 30 } }}
           >
-            Website
+            Sam Banks
           </Typography>
           {project ? (
             <Box sx={{ mt: 2, color: "black" }}>
