@@ -1,30 +1,11 @@
-# Bet Calculator
+# Portfolio Website
 
-A react frontend for Betcruncher.js by Catena-Media.
+A small portfolio website made using ReactJs with BOX2d and MUI. 
 
+Inspired by Paul Macgregor at works.pm.
 
-## Description
+![image](https://github.com/user-attachments/assets/e53bba5c-631e-4ff1-b2bb-40f265834cc6)
 
-Working for a gambling operator, we regularly use online bet calculators to work out potential returns, check payouts are correct & break down the workings of a wager for clients. 
+![image](https://github.com/user-attachments/assets/c34f8652-3fb0-48b8-804c-1a4a42e9d50c)
 
-Betcruncher.js is a bet calculator engine made in javascript (https://github.com/Catena-Media/betcruncher). I wanted an excuse to use React, so used it to make a simple frontend with MUI components.
-
-
-## To do
-
-- Most of the code is in one file as have spent a lot of time getting used to using MUI. Needs cleaning up and separated into components.
-- Add option to apply Rule4 deductions
-- Add option to apply accumulator bonuses
-- Add ability to add/remove selections for bet types that allow unlimited selections. 
-- Error handling... 
-
-Current state of the UI (16/01/24)
-
-![Alt text](image.png)
-![Alt text](image-1.png)
-![Alt text](image-2.png)
-
-Mobile views
-
-![Alt text](image-3.png)
-![Alt text](image-4.png)
+![Recording 2024-10-18 at 12 52 24](https://github.com/user-attachments/assets/d43a86e2-e933-4493-9a6c-db799fe876a5)
