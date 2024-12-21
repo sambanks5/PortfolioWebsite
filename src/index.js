@@ -46,6 +46,7 @@ const theme = createTheme({
       styleOverrides: {
         body: {
           backgroundColor: '#fbf5f3', // Set the body background color
+          // backgroundColor: '#1B1F3B', // Set the body background color
         },
       },
     },

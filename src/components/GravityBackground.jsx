@@ -25,7 +25,7 @@ const GravityBackground = ({ setSelectedProject, toggleGravity, setHoveredLink, 
 
         const renderer = new THREE.WebGLRenderer({ alpha: true });
         renderer.setSize(width, height);
-        renderer.setClearColor(0x000000, 0); 
+        renderer.setClearColor(0x000000, 0);
         mountRef.current.appendChild(renderer.domElement);
 
         // Box2D setup
@@ -39,7 +39,7 @@ const GravityBackground = ({ setSelectedProject, toggleGravity, setHoveredLink, 
 
         // gravity pointing downwards
         const world = new b2World(new b2Vec2(0, -60), true);
-        worldRef.current = world; // Store the world reference
+        worldRef.current = world;
 
         const groundBodyDef = new b2BodyDef();
         groundBodyDef.position.Set(0, -height / 60);
@@ -50,7 +50,7 @@ const GravityBackground = ({ setSelectedProject, toggleGravity, setHoveredLink, 
 
         // left wall body
         const leftWallBodyDef = new b2BodyDef();
-        leftWallBodyDef.position.Set(-width / 60, 0); 
+        leftWallBodyDef.position.Set(-width / 60, 0);
         const leftWallBody = world.CreateBody(leftWallBodyDef);
         const leftWallBox = new b2PolygonShape();
         leftWallBox.SetAsBox(0.5, height / 30);
@@ -58,7 +58,7 @@ const GravityBackground = ({ setSelectedProject, toggleGravity, setHoveredLink, 
 
         // right wall body
         const rightWallBodyDef = new b2BodyDef();
-        rightWallBodyDef.position.Set(width / 60, 0); 
+        rightWallBodyDef.position.Set(width / 60, 0);
         const rightWallBody = world.CreateBody(rightWallBodyDef);
         const rightWallBox = new b2PolygonShape();
         rightWallBox.SetAsBox(0.5, height / 30);
@@ -72,14 +72,14 @@ const GravityBackground = ({ setSelectedProject, toggleGravity, setHoveredLink, 
         topBox.SetAsBox(width / 30, 0.5);
         topBody.CreateFixture2(topBox, 0);
 
-        const sizes = [75, 60, 50, 40];
+        const sizes = [75, 60, 50, 45];
         const spheres = [];
 
         for (let i = 0; i < numSpheres; i++) {
             const size = sizes[Math.floor(Math.random() * sizes.length)];
 
             const sphereGeometry = new THREE.CircleGeometry(size, 9);
-            const sphereMaterial = new THREE.MeshBasicMaterial({ color: 0x084c61 });
+            const sphereMaterial = new THREE.MeshBasicMaterial({ color: 0xdcdee0 });
             const sphere = new THREE.Mesh(sphereGeometry, sphereMaterial);
 
             const x = (Math.random() - 0.5) * (width - size * 2);
@@ -104,12 +104,12 @@ const GravityBackground = ({ setSelectedProject, toggleGravity, setHoveredLink, 
             sphere.body = body;
         }
 
-        const colors = [0xD91E36, 0x33ff57, 0x3357ff, 0xff33a1, 0xffa133];
+        const colors = [0xffffff, 0x59CD90, 0x3FA7D6, 0xFAC05E, 0xEE6352]; //First is white as gets ignored anyway
 
         const linkSpheres = [];
-        const numLinkSpheres = 5; 
+        const numLinkSpheres = 5;
         const projectLinks = [
-            { id: 1, url: "#", name: "?" },
+            { id: 1, url: "#", name: "About" },
             { id: 2, url: "#", name: "Bet Monitor" },
             { id: 3, url: "#", name: "BetCalc" },
             { id: 4, url: "#", name: "PlaysTV Scraper" },
@@ -157,7 +157,7 @@ const GravityBackground = ({ setSelectedProject, toggleGravity, setHoveredLink, 
 
             if (i === 0) {
                 linkSphere.userData.toggleGravity = true;
-                linkSphere.material.color.set(0x7e00bd);
+                linkSphere.material.color.set(0xB14AED);
                 linkSphere.userData.originalColor = {
                     r: linkSphere.material.color.r,
                     g: linkSphere.material.color.g,
@@ -179,18 +179,19 @@ const GravityBackground = ({ setSelectedProject, toggleGravity, setHoveredLink, 
         const mouse = new THREE.Vector2();
 
         const onMouseMove = (event) => {
-            mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
-            mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
+            const rect = renderer.domElement.getBoundingClientRect();
+            mouse.x = ((event.clientX - rect.left) / rect.width) * 2 - 1;
+            mouse.y = -((event.clientY - rect.top) / rect.height) * 2 + 1;
             raycaster.setFromCamera(mouse, camera);
             const intersects = raycaster.intersectObjects(linkSpheres);
-        
+
             if (intersects.length > 0) {
                 const intersectedObject = intersects[0].object;
                 if (hoveredObjectRef.current !== intersectedObject) {
                     setHoveredLink(intersectedObject.userData.projectId);
                     setTooltipTitle(intersectedObject.userData.name);
-                    setTooltipOpen(true); 
-                    document.body.style.cursor = 'pointer'; 
+                    setTooltipOpen(true);
+                    document.body.style.cursor = 'pointer';
                     if (hoveredObjectRef.current) {
                         gsap.to(hoveredObjectRef.current.material.color, {
                             r: hoveredObjectRef.current.userData.originalColor.r,
@@ -208,9 +209,9 @@ const GravityBackground = ({ setSelectedProject, toggleGravity, setHoveredLink, 
                     hoveredObjectRef.current = intersectedObject;
                 }
             } else {
-                setHoveredLink(null); 
-                setTooltipOpen(false); 
-                document.body.style.cursor = 'default'; 
+                setHoveredLink(null);
+                setTooltipOpen(false);
+                document.body.style.cursor = 'default';
                 if (hoveredObjectRef.current) {
                     gsap.to(hoveredObjectRef.current.material.color, {
                         r: hoveredObjectRef.current.userData.originalColor.r,
@@ -222,35 +223,20 @@ const GravityBackground = ({ setSelectedProject, toggleGravity, setHoveredLink, 
                 }
             }
         };
-
         const onClick = (event) => {
-            mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
-            mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
+            const rect = renderer.domElement.getBoundingClientRect();
+            mouse.x = ((event.clientX - rect.left) / rect.width) * 2 - 1;
+            mouse.y = -((event.clientY - rect.top) / rect.height) * 2 + 1;
             raycaster.setFromCamera(mouse, camera);
             const intersects = raycaster.intersectObjects(linkSpheres);
-
+        
             if (intersects.length > 0) {
                 const intersectedObject = intersects[0].object;
                 if (intersectedObject.userData.toggleGravity) {
-                    const currentGravity = worldRef.current.GetGravity();
-                    let currentDirection;
-                    if (currentGravity.y < 0) {
-                        currentDirection = 'N';
-                    } else if (currentGravity.y > 0) {
-                        currentDirection = 'S';
-                    } else if (currentGravity.x > 0) {
-                        currentDirection = 'E';
-                    } else {
-                        currentDirection = 'W';
-                    }
-
-                    const directions = ['N', 'S', 'E', 'W'].filter(dir => dir !== currentDirection);
-                    const randomDirection = directions[Math.floor(Math.random() * directions.length)];
-                    toggleGravity(true, randomDirection);
+                    setSelectedProject(null); // Set selected project to null to display aboutMe information
                 } else {
                     console.log("Clicked on project with ID:", intersectedObject.userData.projectId);
                     setSelectedProject(intersectedObject.userData.projectId);
-                    toggleGravity(false); 
                 }
             }
         };
@@ -258,29 +244,29 @@ const GravityBackground = ({ setSelectedProject, toggleGravity, setHoveredLink, 
         window.addEventListener("mousemove", onMouseMove);
         window.addEventListener("click", onClick);
 
-		const animate = () => {
-			requestAnimationFrame(animate);
-			world.Step(1 / 60, 10, 10);
-			spheres.forEach((sphere) => {
-				const pos = sphere.body.GetPosition();
-				sphere.position.set(pos.x * 30, pos.y * 30, 0);
-				const angle = sphere.body.GetAngle();
-				sphere.rotation.set(0, 0, angle);
-			});
-			linkSpheres.forEach((linkSphere) => {
-				const pos = linkSphere.body.GetPosition();
-				linkSphere.position.set(pos.x * 30, pos.y * 30, 0);
-				const angle = linkSphere.body.GetAngle();
-				linkSphere.rotation.set(0, 0, angle);
-			});
-		
-			if (hoveredObjectRef.current) {
-				const pos = hoveredObjectRef.current.position;
-				setTooltipPosition({ x: pos.x + window.innerWidth / 2, y: -pos.y + window.innerHeight / 2 });
-			}
-		
-			renderer.render(scene, camera);
-		};
+        const animate = () => {
+            requestAnimationFrame(animate);
+            world.Step(1 / 60, 10, 10);
+            spheres.forEach((sphere) => {
+                const pos = sphere.body.GetPosition();
+                sphere.position.set(pos.x * 30, pos.y * 30, 0);
+                const angle = sphere.body.GetAngle();
+                sphere.rotation.set(0, 0, angle);
+            });
+            linkSpheres.forEach((linkSphere) => {
+                const pos = linkSphere.body.GetPosition();
+                linkSphere.position.set(pos.x * 30, pos.y * 30, 0);
+                const angle = linkSphere.body.GetAngle();
+                linkSphere.rotation.set(0, 0, angle);
+            });
+
+            if (hoveredObjectRef.current) {
+                const pos = hoveredObjectRef.current.position;
+                setTooltipPosition({ x: pos.x + window.innerWidth / 2, y: -pos.y + window.innerHeight / 2 });
+            }
+
+            renderer.render(scene, camera);
+        };
 
         animate();
 

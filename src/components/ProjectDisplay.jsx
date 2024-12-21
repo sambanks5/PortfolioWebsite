@@ -4,8 +4,6 @@ import { FaReact, FaPython, FaHtml5, FaCss3Alt, FaGithub } from "react-icons/fa"
 import { GrJs } from "react-icons/gr";
 import { SiMui } from "react-icons/si";
 
-import betCalculatorGif from "../media/betCalculatorGif.gif";
-
 function ProjectDisplay({ project, open, onClose }) {
   const isMobile = useMediaQuery('(max-width:600px)');
 
@@ -35,13 +33,6 @@ function ProjectDisplay({ project, open, onClose }) {
 
   return (
     <>
-      <Modal
-        open={open}
-        onClose={onClose}
-        BackdropProps={{
-          timeout: 1000,
-        }}
-      >
         <Box sx={style}>
           <Box id="Hello" sx={{ display: "flex", flexDirection: isMobile ? "column" : "row", m: 2}}>
             <Box sx={{ display: "flex", flexDirection: "column", alignItems: "center", mx: 2, width: isMobile ? "100%" : "50%" }}>
@@ -78,14 +69,8 @@ function ProjectDisplay({ project, open, onClose }) {
                 </Box>
               )}
             </Box>
-            <Box sx={{ display: "flex", flexDirection: "column", alignItems: "center", mx: 2, width: isMobile ? "100%" : "50%" }}>
-              {project.id === 3 && (
-                <img src={betCalculatorGif} alt="Bet Calculator Demo" style={{ width: isMobile ? "80%" : "420px", height: isMobile ? "auto" : "400px" }} />
-              )}
-            </Box>
           </Box>
         </Box>
-      </Modal>
     </>
   );
 }
