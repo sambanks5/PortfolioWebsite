@@ -1,26 +1,26 @@
 import React, { useState, useEffect } from "react";
-import { Typography, Box, Fade, Chip, Divider, IconButton} from "@mui/material";
-import { FaReact, FaPython, FaHtml5, FaCss3Alt, FaGithub } from "react-icons/fa"; 
+import { Typography, Box, Fade, Chip, Divider, IconButton } from "@mui/material";
+import { FaReact, FaPython, FaHtml5, FaCss3Alt, FaGithub } from "react-icons/fa";
 import { Bs4Circle } from "react-icons/bs";
 import { PiFileCSharp } from "react-icons/pi";
 import { GrJs } from "react-icons/gr";
 import { SiMui, SiSqlite, SiSelenium } from "react-icons/si";
-import { useTheme } from "@mui/material/styles"; 
+import { useTheme } from "@mui/material/styles";
 
 const TitleText = ({ hoveredLink, project }) => {
   const [fade, setFade] = useState(false);
-  const theme = useTheme(); 
+  const theme = useTheme();
 
   useEffect(() => {
     setFade(false);
-    const timeout = setTimeout(() => setFade(true), 50); 
+    const timeout = setTimeout(() => setFade(true), 50);
     return () => clearTimeout(timeout);
   }, [hoveredLink, project]);
 
   const aboutMe = {
     name: "Sam Banks",
-    header: "Product Development Lead & Senior Trader",
-    description: "Welcome to my Portfolio site.\n\nHere, you can find examples of my work, including projects I have completed and currently working on.",
+    header: "Welcome to my Portfolio.",
+    description: "Here, you can find examples of my work, including projects I have completed and currently working on.",
     languages: ["Python", "React", "SQL", "HTML", "CSS"],
     skills: ["Project Management", "Problem Solving", "Analytics", "Communication & Collaboration"],
   };
@@ -51,7 +51,7 @@ const TitleText = ({ hoveredLink, project }) => {
         opacity: 0.9,
         borderRadius: 5,
         zIndex: 1,
-        padding: 4,
+        padding: 2,
         "&:hover": {
           opacity: 1,
         },
@@ -91,9 +91,9 @@ const TitleText = ({ hoveredLink, project }) => {
                 ))}
               </Box>
               {project.github && (
-                <Box sx={{ mt: 2, display: 'flex', justifyContent: 'center'}}>
+                <Box sx={{ mt: 2, display: 'flex', justifyContent: 'center' }}>
                   <IconButton
-                    sx={{ color: "#000000", fontSize: 30, opacity: 0.6, transition: "opacity 0.5s", '&:hover': {opacity: 1} }}
+                    sx={{ color: "#000000", fontSize: 30, opacity: 0.6, transition: "opacity 0.5s", '&:hover': { opacity: 1 } }}
                     component="a"
                     href={project.github}
                     target="_blank"
@@ -110,17 +110,17 @@ const TitleText = ({ hoveredLink, project }) => {
               {/* <Typography variant="h1" sx={{ [theme.breakpoints.down('sm')]: { fontSize: 18 } }}>
                 {aboutMe.name}
               </Typography>
-              <Divider sx={{ width: "100%", backgroundColor: "black", margin: "10px 0" }} />
+              <Divider sx={{ width: "100%", backgroundColor: "black", margin: "10px 0" }} /> */}
               <Typography variant="h2" sx={{ mt: 1, whiteSpace: 'pre-line', [theme.breakpoints.down('sm')]: { fontSize: 14 } }}>
                 {aboutMe.header}
-              </Typography> */}
-              <Typography variant="body1" sx={{ my: 4, whiteSpace: 'pre-line', [theme.breakpoints.down('sm')]: { fontSize: 12 } }}>
+              </Typography>
+              <Typography variant="h3" sx={{ my: 4, whiteSpace: 'pre-line', [theme.breakpoints.down('sm')]: { fontSize: 12 } }}>
                 {aboutMe.description}
               </Typography>
 
 
               <Divider sx={{ width: "100%", backgroundColor: "black", margin: "10px 0" }} />
-              <Typography variant="h4" sx={{mt: 4, [theme.breakpoints.down('sm')]: { fontSize: 18 } }}>
+              <Typography variant="body1" sx={{ mt: 4, [theme.breakpoints.down('sm')]: { fontSize: 18 } }}>
                 What I do
               </Typography>
               <Box sx={{ mt: 2, display: 'flex', flexWrap: 'wrap', gap: 1, justifyContent: "center" }}>
@@ -130,22 +130,50 @@ const TitleText = ({ hoveredLink, project }) => {
                     label={language}
                     icon={languageIcons[language]}
                     variant="outlined"
-                    sx={{ color: "black", height: "35px", [theme.breakpoints.down('sm')]: { height: "30px", fontSize: 12 } }}
+                    sx={{
+                      color: "black",
+                      height: "30px", // Adjust the height of the chip
+                      fontSize: 11, // Adjust the font size of the label
+                      padding: "0 3px", // Adjust the padding inside the chip
+                      [theme.breakpoints.down('sm')]: {
+                        height: "25px", // Adjust the height for small screens
+                        fontSize: 12, // Adjust the font size for small screens
+                        padding: "0 3px", // Adjust the padding for small screens
+                      },
+                      '& .MuiChip-icon': {
+                        fontSize: 12, // Adjust the icon size
+                        [theme.breakpoints.down('sm')]: { fontSize: 16 } // Adjust the icon size for small screens
+                      }
+                    }}
                     clickable
                   />
                 ))}
-                </Box>
-                <Box sx={{ mt: 2, display: 'flex', flexWrap: 'wrap', gap: 1, justifyContent: "center" }}>
-                  {aboutMe.skills.map((skill, index) => (
-                    <Chip
-                      key={index}
-                      label={skill}
-                      variant="outlined"
-                      sx={{ color: "black", height: "35px", [theme.breakpoints.down('sm')]: { height: "30px", fontSize: 12 } }}
-                      clickable
-                    />
-                  ))}
-                  </Box>
+              </Box>
+              <Box sx={{ mt: 2, display: 'flex', flexWrap: 'wrap', gap: 1, justifyContent: "center" }}>
+                {aboutMe.skills.map((skill, index) => (
+                  <Chip
+                    key={index}
+                    label={skill}
+                    variant="outlined"
+                    sx={{
+                      color: "black",
+                      height: "30px", // Adjust the height of the chip
+                      fontSize: 11, // Adjust the font size of the label
+                      padding: "0 3px", // Adjust the padding inside the chip
+                      [theme.breakpoints.down('sm')]: {
+                        height: "25px", // Adjust the height for small screens
+                        fontSize: 12, // Adjust the font size for small screens
+                        padding: "0 3px", // Adjust the padding for small screens
+                      },
+                      '& .MuiChip-icon': {
+                        fontSize: 12, // Adjust the icon size
+                        [theme.breakpoints.down('sm')]: { fontSize: 16 } // Adjust the icon size for small screens
+                      }
+                    }}
+                    clickable
+                  />
+                ))}
+              </Box>
             </Box>
           )}
         </Box>

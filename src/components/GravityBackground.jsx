@@ -73,7 +73,7 @@ const GravityBackground = ({ setSelectedProject, toggleGravity, setHoveredLink, 
         topBox.SetAsBox(width / 30, 0.5);
         topBody.CreateFixture2(topBox, 0);
 
-        const sizes = [75, 60, 50, 45];
+        const sizes = [65, 50, 40, 35];
         const spheres = [];
 
         for (let i = 0; i < numSpheres; i++) {

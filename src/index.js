@@ -23,22 +23,25 @@ const theme = createTheme({
   typography: {
     fontFamily: '"DM Sans", sans-serif',
     h1: {
-      fontSize: 32,
+      fontSize: 22,
     },
     h2: {
-      fontSize: 24,
+      fontSize: 15,
     },
     h3: {
-      fontSize: 18.72,
+      fontSize: 11.72,
     },
     h4: {
-      fontSize: 16,
+      fontSize: 14,
     },
     h5: {
       fontSize: 13.28,
     },
     h6: {
       fontSize: 10.72,
+    },
+    body1: {
+      fontSize: 12,
     },
   },
   components: {

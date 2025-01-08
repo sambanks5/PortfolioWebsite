@@ -56,7 +56,7 @@ function App() {
             }
         }
     }, []);
-    
+
     const handleClick = useCallback((projectId) => {
         setSelectedProjectId(projectId);
         if (projectId === null) {
@@ -93,13 +93,13 @@ function App() {
     return (
         <Fade in={true} timeout={500}>
             <Container maxWidth="True">
-                <Box className="nameContact" sx={{ position: "absolute", top: 5, left: 15, color: "Black", display: "flex", gap: 1, opacity: 0.6, transition: "opacity 0.5s", '&:hover': {opacity: 1}}} >
-                    <Typography variant="h2" sx={{ mt: 1 }}>Sam Banks</Typography>
+                <Box className="nameContact" sx={{ position: "absolute", top: 5, left: 15, color: "Black", display: "flex", alignItems: "center", gap: 1, opacity: 0.6, transition: "opacity 0.5s", '&:hover': {opacity: 1}}} >
+                    <Typography variant="h1">Sam Banks</Typography>
                     <IconButton href="https://github.com/sambanks5" target="_blank" rel="noopener noreferrer">
-                        <GitHubIcon sx={{ color: "#000000", fontSize: 30 }} />
+                        <GitHubIcon sx={{ color: "#000000", fontSize: 25 }} />
                     </IconButton>
                     <IconButton href="https://www.linkedin.com/in/sam-banks-524161161/" target="_blank" rel="noopener noreferrer">
-                        <LinkedInIcon sx={{ color: "#000000", fontSize: 30 }} />
+                        <LinkedInIcon sx={{ color: "#000000", fontSize: 25 }} />
                     </IconButton>
                 </Box>
                 <GravityBackground setSelectedProject={handleClick} toggleGravity={toggleGravity} setHoveredLink={handleSetHoveredLink} worldRef={worldRef} />
