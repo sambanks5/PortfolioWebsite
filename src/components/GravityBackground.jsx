@@ -104,16 +104,18 @@ const GravityBackground = ({ setSelectedProject, toggleGravity, setHoveredLink, 
             sphere.body = body;
         }
 
-        const colors = [0xffffff, 0x59CD90, 0x3FA7D6, 0xFAC05E, 0xEE6352]; //First is white as gets ignored anyway
+        const colors = [0xffffff, 0x59CD90, 0x3FA7D6, 0xFAC05E, 0xEE6352, 0x161925, 0xB1CC74]; //First is white as gets ignored anyway no idea why. 
 
         const linkSpheres = [];
-        const numLinkSpheres = 5;
+        const numLinkSpheres = 7;
         const projectLinks = [
             { id: 1, url: "#", name: "About" },
-            { id: 2, url: "#", name: "Bet Monitor" },
-            { id: 3, url: "#", name: "BetCalc" },
+            { id: 2, url: "#", name: "BetMonitor" },
+            { id: 3, url: "#", name: "BetCalculator" },
             { id: 4, url: "#", name: "PlaysTV Scraper" },
-            { id: 5, url: "#", name: "Contact" },
+            { id: 5, url: "#", name: "AudioSwitcher" },
+            { id: 6, url: "#", name: "BackgroundChecker" },
+            { id: 7, url: "#", name: "RecipeApp" },
         ];
 
         for (let i = 0; i < numLinkSpheres; i++) {

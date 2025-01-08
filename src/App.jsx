@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import GravityBackground from "./components/GravityBackground.jsx";
 import LinkDisplay from "./components/TitleText.jsx";
-import { Container, Fade, Box, IconButton } from "@mui/material";
+import { Container, Fade, Box, IconButton, Typography } from "@mui/material";
 import GitHubIcon from '@mui/icons-material/GitHub';
 import LinkedInIcon from '@mui/icons-material/LinkedIn';
 import Box2D from "box2dweb";
@@ -88,12 +88,13 @@ function App() {
     return (
         <Fade in={true} timeout={500}>
             <Container maxWidth="True">
-                <Box sx={{ position: "absolute", top: 5, left: 15, color: "Black", display: "flex", gap: 1 }}>
+                <Box className="nameContact" sx={{ position: "absolute", top: 5, left: 15, color: "Black", display: "flex", gap: 1, opacity: 0.6, transition: "opacity 0.5s", '&:hover': {opacity: 1}}} >
+                    <Typography variant="h2" sx={{ mt: 1 }}>Sam Banks</Typography>
                     <IconButton href="https://github.com/sambanks5" target="_blank" rel="noopener noreferrer">
-                        <GitHubIcon sx={{ color: "#dcdee0", fontSize: 30 }} />
+                        <GitHubIcon sx={{ color: "#000000", fontSize: 30 }} />
                     </IconButton>
                     <IconButton href="https://www.linkedin.com/in/sam-banks-524161161/" target="_blank" rel="noopener noreferrer">
-                        <LinkedInIcon sx={{ color: "#dcdee0", fontSize: 30 }} />
+                        <LinkedInIcon sx={{ color: "#000000", fontSize: 30 }} />
                     </IconButton>
                 </Box>
                 <GravityBackground setSelectedProject={handleClick} toggleGravity={toggleGravity} setHoveredLink={setHoveredLink} worldRef={worldRef} />
