@@ -13,8 +13,9 @@ const GravityBackground = ({ setSelectedProject, toggleGravity, setHoveredLink, 
     const areaRef = useRef(null);
 
     useEffect(() => {
-        const width = mountRef.current.clientWidth;
-        const height = mountRef.current.clientHeight;
+        const mount = mountRef.current;
+        const width = mount.clientWidth;
+        const height = mount.clientHeight;
 
         const numSpheres = Math.floor((width * height) / 70000);
 
@@ -26,7 +27,7 @@ const GravityBackground = ({ setSelectedProject, toggleGravity, setHoveredLink, 
         const renderer = new THREE.WebGLRenderer({ alpha: true });
         renderer.setSize(width, height);
         renderer.setClearColor(0x000000, 0);
-        mountRef.current.appendChild(renderer.domElement);
+        mount.appendChild(renderer.domElement);
 
         // Box2D setup
         const b2Vec2 = Box2D.Common.Math.b2Vec2;
@@ -275,9 +276,9 @@ const GravityBackground = ({ setSelectedProject, toggleGravity, setHoveredLink, 
         return () => {
             window.removeEventListener("mousemove", onMouseMove);
             window.removeEventListener("click", onClick);
-            mountRef.current.removeChild(renderer.domElement);
+            mount.removeChild(renderer.domElement);
         };
-    }, []);
+    }, [setHoveredLink, setSelectedProject, worldRef]);
 
     return (
         <Box>

@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, useCallback } from "react";
 import GravityBackground from "./components/GravityBackground.jsx";
 import LinkDisplay from "./components/TitleText.jsx";
 import { Container, Fade, Box, IconButton, Typography } from "@mui/material";
@@ -18,35 +18,7 @@ function App() {
     }, [selectedProjectId]);
 
     const selectedProject = projects.find(project => project.id === selectedProjectId);
-
-    const handleClick = (projectId) => {
-        setSelectedProjectId(projectId);
-        if (projectId === null) {
-            // Get the current gravity direction
-            const currentGravity = worldRef.current.GetGravity();
-            let currentDirection;
-            if (currentGravity.y < 0) {
-                currentDirection = 'N';
-            } else if (currentGravity.y > 0) {
-                currentDirection = 'S';
-            } else if (currentGravity.x > 0) {
-                currentDirection = 'E';
-            } else {
-                currentDirection = 'W';
-            }
-
-            // Set gravity to a random direction excluding the current one
-            const directions = ['N', 'S', 'E', 'W'].filter(dir => dir !== currentDirection);
-            const randomDirection = directions[Math.floor(Math.random() * directions.length)];
-            if (randomDirection !== currentDirection) {
-                toggleGravity(true, randomDirection);
-            }
-        } else {
-            toggleGravity(false);
-        }
-    };
-
-    const toggleGravity = (isOn, direction = null) => {
+    const toggleGravity = useCallback((isOn, direction = null) => {
         const world = worldRef.current;
         if (world) {
             let newGravity;
@@ -83,7 +55,40 @@ function App() {
                 body.SetAwake(true);
             }
         }
-    };
+    }, []);
+    
+    const handleClick = useCallback((projectId) => {
+        setSelectedProjectId(projectId);
+        if (projectId === null) {
+            // Get the current gravity direction
+            const currentGravity = worldRef.current.GetGravity();
+            let currentDirection;
+            if (currentGravity.y < 0) {
+                currentDirection = 'N';
+            } else if (currentGravity.y > 0) {
+                currentDirection = 'S';
+            } else if (currentGravity.x > 0) {
+                currentDirection = 'E';
+            } else {
+                currentDirection = 'W';
+            }
+
+            // Set gravity to a random direction excluding the current one
+            const directions = ['N', 'S', 'E', 'W'].filter(dir => dir !== currentDirection);
+            const randomDirection = directions[Math.floor(Math.random() * directions.length)];
+            if (randomDirection !== currentDirection) {
+                toggleGravity(true, randomDirection);
+            }
+        } else {
+            toggleGravity(false);
+        }
+    }, [toggleGravity]);
+
+    const handleSetHoveredLink = useCallback((linkId) => {
+        setHoveredLink(linkId);
+    }, []);
+
+
 
     return (
         <Fade in={true} timeout={500}>
@@ -97,7 +102,7 @@ function App() {
                         <LinkedInIcon sx={{ color: "#000000", fontSize: 30 }} />
                     </IconButton>
                 </Box>
-                <GravityBackground setSelectedProject={handleClick} toggleGravity={toggleGravity} setHoveredLink={setHoveredLink} worldRef={worldRef} />
+                <GravityBackground setSelectedProject={handleClick} toggleGravity={toggleGravity} setHoveredLink={handleSetHoveredLink} worldRef={worldRef} />
                 <LinkDisplay hoveredLink={hoveredLink} project={selectedProject} onClick={() => handleClick(selectedProjectId)} />
             </Container>
         </Fade>
