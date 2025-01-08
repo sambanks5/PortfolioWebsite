@@ -4,7 +4,6 @@ import { gsap } from "gsap";
 import * as THREE from "three";
 import Box2D from "box2dweb";
 
-
 export const projectLinks = [
     { id: 1, url: "#", name: "" },
     { id: 2, url: "#", name: "BetMonitor" },
@@ -15,16 +14,16 @@ export const projectLinks = [
     { id: 7, url: "#", name: "RecipeApp" },
 ];
 
-export const colors = [0xffffff, 0xB1CC74, 0x3FA7D6, 0xFAC05E, 0xEE6352, 0x161925, 0x59CD90]; //First is white as gets ignored anyway no idea why. 
+export const colors = [0xffffff, 0x11D5A0, 0x1B9AAA, 0xEF476F, 0xFFC43D, 0x161925, 0x3B1F2B]; //First is white as gets ignored anyway no idea why. 
 
-
-const GravityBackground = ({ setSelectedProject, toggleGravity, setHoveredLink, worldRef }) => {
+const GravityBackground = ({ setSelectedProject, toggleGravity, setHoveredLink, worldRef, hoveredLink }) => {
     const mountRef = useRef(null);
     const hoveredObjectRef = useRef(null);
     const [tooltipOpen, setTooltipOpen] = useState(false);
     const [tooltipTitle, setTooltipTitle] = useState("");
     const [tooltipPosition, setTooltipPosition] = useState({ x: 0, y: 0 });
     const areaRef = useRef(null);
+    const linkSpheresRef = useRef([]);
 
     useEffect(() => {
         const mount = mountRef.current;
@@ -181,6 +180,8 @@ const GravityBackground = ({ setSelectedProject, toggleGravity, setHoveredLink, 
             }
         }
 
+        linkSpheresRef.current = linkSpheres;
+
         const raycaster = new THREE.Raycaster();
         const mouse = new THREE.Vector2();
 
@@ -215,7 +216,6 @@ const GravityBackground = ({ setSelectedProject, toggleGravity, setHoveredLink, 
                     hoveredObjectRef.current = intersectedObject;
                 }
             } else {
-                setHoveredLink(null);
                 setTooltipOpen(false);
                 document.body.style.cursor = 'default';
                 if (hoveredObjectRef.current) {
@@ -282,6 +282,27 @@ const GravityBackground = ({ setSelectedProject, toggleGravity, setHoveredLink, 
             mount.removeChild(renderer.domElement);
         };
     }, [setHoveredLink, setSelectedProject, worldRef]);
+
+    // New useEffect to handle hover animation based on hoveredLink
+    useEffect(() => {
+        linkSpheresRef.current.forEach((linkSphere) => {
+            if (hoveredLink === linkSphere.userData.projectId) {
+                gsap.to(linkSphere.material.color, {
+                    r: Math.min(linkSphere.userData.originalColor.r * 4, 1),
+                    g: Math.min(linkSphere.userData.originalColor.g * 4, 1),
+                    b: Math.min(linkSphere.userData.originalColor.b * 4, 1),
+                    duration: 0.3,
+                });
+            } else {
+                gsap.to(linkSphere.material.color, {
+                    r: linkSphere.userData.originalColor.r,
+                    g: linkSphere.userData.originalColor.g,
+                    b: linkSphere.userData.originalColor.b,
+                    duration: 0.3,
+                });
+            }
+        });
+    }, [hoveredLink]);
 
     return (
         <Box>

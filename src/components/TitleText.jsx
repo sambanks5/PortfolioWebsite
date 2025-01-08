@@ -1,20 +1,24 @@
 import React, { useState, useEffect, useRef } from "react";
 import { projectLinks, colors } from './GravityBackground';
 
-import { Typography, Box, Fade, Chip, Divider, IconButton, List, ListItem, ListItemIcon, ListItemText } from "@mui/material";
+import { Typography, Box, Fade, Chip, Divider, IconButton } from "@mui/material";
 import { FaReact, FaPython, FaHtml5, FaCss3Alt, FaGithub } from "react-icons/fa";
 import { Bs4Circle } from "react-icons/bs";
-
+import { HiMiniHome } from "react-icons/hi2";
 import { PiFileCSharp } from "react-icons/pi";
 import { GrJs } from "react-icons/gr";
 import { SiMui, SiSqlite, SiSelenium } from "react-icons/si";
 import { useTheme } from "@mui/material/styles";
 
-const TitleText = ({ setSelectedProject, hoveredLink, project }) => {
+const TitleText = ({ setSelectedProject, hoveredLink, setHoveredLink, project }) => {
   const [fade, setFade] = useState(false);
   const [height, setHeight] = useState("auto");
   const contentRef = useRef(null);
   const theme = useTheme();
+
+  useEffect(() => {
+    console.log("Hovered Link ID in TitleText:", hoveredLink);
+  }, [hoveredLink]);
 
   useEffect(() => {
     setFade(false);
@@ -28,6 +32,11 @@ const TitleText = ({ setSelectedProject, hoveredLink, project }) => {
       setHeight(newHeight);
     }
   }, [project, fade]);
+
+  // Additional useEffect to log hoveredLink state within TitleText component
+  useEffect(() => {
+    console.log("Hovered Link ID inside TitleText component:", hoveredLink);
+  }, [hoveredLink]);
 
   const aboutMe = {
     name: "Sam Banks",
@@ -113,6 +122,15 @@ const TitleText = ({ setSelectedProject, hoveredLink, project }) => {
                     />
                   ))}
                 </Box>
+                <Box sx={{ display: 'flex', gap: 1 }}>
+                  <IconButton
+                    sx={{ color: "#000000", fontSize: 30, opacity: 0.6, transition: "opacity 0.5s", '&:hover': { opacity: 1 } }}
+                    aria-label="Home"
+                    onClick={() => setSelectedProject(null)}
+                  >
+                    <HiMiniHome style={{ fontSize: "30px" }} />
+                  </IconButton>
+                </Box>
 
                 {project.github && (
                   <Box sx={{ display: 'flex', justifyContent: 'flex-end' }}>
@@ -177,6 +195,14 @@ const TitleText = ({ setSelectedProject, hoveredLink, project }) => {
                         icon={<Box sx={{ width: 16, height: 16, backgroundColor: color ? `#${color.toString(16)}` : 'transparent', borderRadius: '50%' }} />}
                         variant="outlined"
                         onClick={() => setSelectedProject(link.id)}
+                        onMouseEnter={() => {
+                          // console.log("Hovering over link ID:", link.id);
+                          setHoveredLink(link.id);
+                        }}
+                        onMouseLeave={() => {
+                          // console.log("Leaving link ID:", link.id);
+                          setHoveredLink(null);
+                        }}
                         sx={{
                           color: "black",
                           height: "30px",

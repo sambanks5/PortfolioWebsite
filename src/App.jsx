@@ -17,6 +17,17 @@ function App() {
         console.log("Selected Project ID:", selectedProjectId);
     }, [selectedProjectId]);
 
+    // Output the hovered link ID for debugging
+    useEffect(() => {
+        if (hoveredLink !== null) {
+            console.log("Selected hovered ID in App:", hoveredLink);
+        }
+    }, [hoveredLink]);
+    
+    const handleSetHoveredLink = useCallback((linkId) => {
+        setHoveredLink(linkId);
+    }, []);
+
     const selectedProject = projects.find(project => project.id === selectedProjectId);
     const toggleGravity = useCallback((isOn, direction = null) => {
         const world = worldRef.current;
@@ -84,16 +95,10 @@ function App() {
         }
     }, [toggleGravity]);
 
-    const handleSetHoveredLink = useCallback((linkId) => {
-        setHoveredLink(linkId);
-    }, []);
-
-
 
     return (
         <Fade in={true} timeout={500}>
             <Container maxWidth="True">
-                {/* <ProjectKey/> */}
                 <Box className="nameContact" sx={{ position: "absolute", top: 5, left: 15, color: "Black", display: "flex", alignItems: "center", gap: 1, opacity: 0.6, transition: "opacity 0.5s", '&:hover': {opacity: 1}}} >
                     <Typography variant="h1">Sam Banks</Typography>
                     <IconButton href="https://github.com/sambanks5" target="_blank" rel="noopener noreferrer">
@@ -103,8 +108,8 @@ function App() {
                         <LinkedInIcon sx={{ color: "#000000", fontSize: 25 }} />
                     </IconButton>
                 </Box>
-                <GravityBackground setSelectedProject={handleClick} toggleGravity={toggleGravity} setHoveredLink={handleSetHoveredLink} worldRef={worldRef} />
-                <LinkDisplay setSelectedProject={handleClick} hoveredLink={hoveredLink} project={selectedProject} onClick={() => handleClick(selectedProjectId)} />
+                <GravityBackground setSelectedProject={handleClick} toggleGravity={toggleGravity} setHoveredLink={handleSetHoveredLink} worldRef={worldRef} hoveredLink={hoveredLink} />
+                <LinkDisplay setSelectedProject={handleClick} hoveredLink={hoveredLink} setHoveredLink={setHoveredLink} project={selectedProject} />
             </Container>
         </Fade>
     );
