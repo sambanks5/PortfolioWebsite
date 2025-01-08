@@ -1,13 +1,16 @@
 import React, { useState, useEffect, useRef } from "react";
-import { Typography, Box, Fade, Chip, Divider, IconButton } from "@mui/material";
+import { projectLinks, colors } from './GravityBackground';
+
+import { Typography, Box, Fade, Chip, Divider, IconButton, List, ListItem, ListItemIcon, ListItemText } from "@mui/material";
 import { FaReact, FaPython, FaHtml5, FaCss3Alt, FaGithub } from "react-icons/fa";
 import { Bs4Circle } from "react-icons/bs";
+
 import { PiFileCSharp } from "react-icons/pi";
 import { GrJs } from "react-icons/gr";
 import { SiMui, SiSqlite, SiSelenium } from "react-icons/si";
 import { useTheme } from "@mui/material/styles";
 
-const TitleText = ({ hoveredLink, project }) => {
+const TitleText = ({ setSelectedProject, hoveredLink, project }) => {
   const [fade, setFade] = useState(false);
   const [height, setHeight] = useState("auto");
   const contentRef = useRef(null);
@@ -22,7 +25,6 @@ const TitleText = ({ hoveredLink, project }) => {
   useEffect(() => {
     if (contentRef.current) {
       const newHeight = contentRef.current.scrollHeight + 40;
-      
       setHeight(newHeight);
     }
   }, [project, fade]);
@@ -36,25 +38,24 @@ const TitleText = ({ hoveredLink, project }) => {
   };
 
   const languageIcons = {
-    JavaScript: <GrJs style={{ color: "grey", fontSize: "1.5em" }} />, // JavaScript yellow
-    React: <FaReact style={{ color: "grey", fontSize: "1.5em" }} />, // React blue
-    Python: <FaPython style={{ color: "grey", fontSize: "1.5em" }} />, // Python blue
-    HTML: <FaHtml5 style={{ color: "grey", fontSize: "1.5em" }} />, // HTML orange
-    CSS: <FaCss3Alt style={{ color: "grey", fontSize: "1.5em" }} />, // CSS blue
-    MUI: <SiMui style={{ color: "grey", fontSize: "1.5em" }} />, // MUI blue
-    SQL: <SiSqlite style={{ color: "grey", fontSize: "1.5em" }} />, // SQL dark blue
-    "C#": <PiFileCSharp style={{ color: "grey", fontSize: "1.5em" }} />, // C# black
-    BeautifulSoup: <Bs4Circle style={{ color: "grey", fontSize: "1.5em" }} />, // BeautifulSoup brown
-    Selenium: <SiSelenium style={{ color: "grey", fontSize: "1.5em" }} />, // Selenium
+    JavaScript: <GrJs style={{ color: "grey", fontSize: "1.5em" }} />,
+    React: <FaReact style={{ color: "grey", fontSize: "1.5em" }} />,
+    Python: <FaPython style={{ color: "grey", fontSize: "1.5em" }} />,
+    HTML: <FaHtml5 style={{ color: "grey", fontSize: "1.5em" }} />,
+    CSS: <FaCss3Alt style={{ color: "grey", fontSize: "1.5em" }} />,
+    MUI: <SiMui style={{ color: "grey", fontSize: "1.5em" }} />,
+    SQL: <SiSqlite style={{ color: "grey", fontSize: "1.5em" }} />,
+    "C#": <PiFileCSharp style={{ color: "grey", fontSize: "1.5em" }} />,
+    BeautifulSoup: <Bs4Circle style={{ color: "grey", fontSize: "1.5em" }} />,
+    Selenium: <SiSelenium style={{ color: "grey", fontSize: "1.5em" }} />,
   };
 
   return (
     <Box
       sx={{
         position: "absolute",
-        top: "50%",
-        left: "600px",
-        transform: "translate(-50%, -50%)",
+        top: "30%",
+        left: "100px",
         backgroundColor: "white",
         opacity: 0.9,
         borderRadius: 5,
@@ -63,19 +64,23 @@ const TitleText = ({ hoveredLink, project }) => {
         "&:hover": {
           opacity: 1,
         },
-        transition: "opacity 0.5s, height 0.3s ease-in-out", 
-        width: "550px", 
+        transition: "opacity 0.5s, height 0.3s ease-in-out",
+        width: "550px",
         height: height,
         minHeight: "320px",
         overflow: "hidden",
         [theme.breakpoints.down('lg')]: {
-          width: "450px", 
+          width: "450px",
+          left: "50px",
+          top: "25%",
         },
         [theme.breakpoints.down('md')]: {
-          width: "400px", 
+          width: "400px",
+          left: "25px",
+          top: "15%",
         },
         [theme.breakpoints.down('sm')]: {
-          width: "300px", 
+          width: "300px",
         },
       }}
     >
@@ -134,10 +139,6 @@ const TitleText = ({ hoveredLink, project }) => {
                 {aboutMe.description}
               </Typography>
 
-              <Divider sx={{ width: "100%", backgroundColor: "black", margin: "10px 0" }} />
-              <Typography variant="body1" sx={{ mt: 4, [theme.breakpoints.down('sm')]: { fontSize: 11 } }}>
-                What I do
-              </Typography>
               <Box sx={{ mt: 2, display: 'flex', flexWrap: 'wrap', gap: 1, justifyContent: "center" }}>
                 {aboutMe.languages.map((language, index) => (
                   <Chip
@@ -147,47 +148,55 @@ const TitleText = ({ hoveredLink, project }) => {
                     variant="outlined"
                     sx={{
                       color: "black",
-                      height: "30px", 
-                      fontSize: 11, 
+                      height: "30px",
+                      fontSize: 11,
                       padding: "0 3px",
                       [theme.breakpoints.down('sm')]: {
                         height: "25px",
-                        fontSize: 12, 
+                        fontSize: 12,
                         padding: "0 3px",
                       },
                       '& .MuiChip-icon': {
-                        fontSize: 12, // Adjust the icon size
-                        [theme.breakpoints.down('sm')]: { fontSize: 16 } 
+                        fontSize: 12,
+                        [theme.breakpoints.down('sm')]: { fontSize: 16 }
                       }
                     }}
                     clickable
                   />
                 ))}
               </Box>
-              <Box sx={{ mt: 2, display: 'flex', flexWrap: 'wrap', gap: 1, justifyContent: "center" }}>
-                {aboutMe.skills.map((skill, index) => (
-                  <Chip
-                    key={index}
-                    label={skill}
-                    variant="outlined"
-                    sx={{
-                      color: "black",
-                      height: "30px", 
-                      fontSize: 11, 
-                      padding: "0 3px",
-                      [theme.breakpoints.down('sm')]: {
-                        height: "25px", 
-                        fontSize: 12, 
-                        padding: "0 3px",
-                      },
-                      '& .MuiChip-icon': {
-                        fontSize: 12, // Adjust the icon size
-                        [theme.breakpoints.down('sm')]: { fontSize: 16 } 
-                      }
-                    }}
-                    clickable
-                  />
-                ))}
+              <Divider sx={{ width: "100%", backgroundColor: "black", my: 4 }} />
+              <Box sx={{ width: "100%" }}>
+                <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 1, justifyContent: "center" }}>
+                  {projectLinks.slice(1).map((link, index) => {
+                    const color = colors[index + 1]; // Skip the first color
+                    return (
+                      <Chip
+                        key={link.id}
+                        label={link.name}
+                        icon={<Box sx={{ width: 16, height: 16, backgroundColor: color ? `#${color.toString(16)}` : 'transparent', borderRadius: '50%' }} />}
+                        variant="outlined"
+                        onClick={() => setSelectedProject(link.id)}
+                        sx={{
+                          color: "black",
+                          height: "30px",
+                          fontSize: 11,
+                          padding: "0 3px",
+                          [theme.breakpoints.down('sm')]: {
+                            height: "25px",
+                            fontSize: 12,
+                            padding: "0 3px",
+                          },
+                          '& .MuiChip-icon': {
+                            fontSize: 12,
+                            [theme.breakpoints.down('sm')]: { fontSize: 16 }
+                          }
+                        }}
+                        clickable
+                      />
+                    );
+                  })}
+                </Box>
               </Box>
             </Box>
           )}

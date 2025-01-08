@@ -93,6 +93,7 @@ function App() {
     return (
         <Fade in={true} timeout={500}>
             <Container maxWidth="True">
+                {/* <ProjectKey/> */}
                 <Box className="nameContact" sx={{ position: "absolute", top: 5, left: 15, color: "Black", display: "flex", alignItems: "center", gap: 1, opacity: 0.6, transition: "opacity 0.5s", '&:hover': {opacity: 1}}} >
                     <Typography variant="h1">Sam Banks</Typography>
                     <IconButton href="https://github.com/sambanks5" target="_blank" rel="noopener noreferrer">
@@ -103,7 +104,7 @@ function App() {
                     </IconButton>
                 </Box>
                 <GravityBackground setSelectedProject={handleClick} toggleGravity={toggleGravity} setHoveredLink={handleSetHoveredLink} worldRef={worldRef} />
-                <LinkDisplay hoveredLink={hoveredLink} project={selectedProject} onClick={() => handleClick(selectedProjectId)} />
+                <LinkDisplay setSelectedProject={handleClick} hoveredLink={hoveredLink} project={selectedProject} onClick={() => handleClick(selectedProjectId)} />
             </Container>
         </Fade>
     );

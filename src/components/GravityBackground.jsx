@@ -4,6 +4,20 @@ import { gsap } from "gsap";
 import * as THREE from "three";
 import Box2D from "box2dweb";
 
+
+export const projectLinks = [
+    { id: 1, url: "#", name: "" },
+    { id: 2, url: "#", name: "BetMonitor" },
+    { id: 3, url: "#", name: "BetCalculator" },
+    { id: 4, url: "#", name: "PlaysTV Scraper" },
+    { id: 5, url: "#", name: "AudioSwitcher" },
+    { id: 6, url: "#", name: "BackgroundChecker" },
+    { id: 7, url: "#", name: "RecipeApp" },
+];
+
+export const colors = [0xffffff, 0xB1CC74, 0x3FA7D6, 0xFAC05E, 0xEE6352, 0x161925, 0x59CD90]; //First is white as gets ignored anyway no idea why. 
+
+
 const GravityBackground = ({ setSelectedProject, toggleGravity, setHoveredLink, worldRef }) => {
     const mountRef = useRef(null);
     const hoveredObjectRef = useRef(null);
@@ -79,7 +93,7 @@ const GravityBackground = ({ setSelectedProject, toggleGravity, setHoveredLink, 
         for (let i = 0; i < numSpheres; i++) {
             const size = sizes[Math.floor(Math.random() * sizes.length)];
 
-            const sphereGeometry = new THREE.CircleGeometry(size, 9);
+            const sphereGeometry = new THREE.CircleGeometry(size, 10);
             const sphereMaterial = new THREE.MeshBasicMaterial({ color: 0xdcdee0 });
             const sphere = new THREE.Mesh(sphereGeometry, sphereMaterial);
 
@@ -105,24 +119,13 @@ const GravityBackground = ({ setSelectedProject, toggleGravity, setHoveredLink, 
             sphere.body = body;
         }
 
-        const colors = [0xffffff, 0x59CD90, 0x3FA7D6, 0xFAC05E, 0xEE6352, 0x161925, 0xB1CC74]; //First is white as gets ignored anyway no idea why. 
-
         const linkSpheres = [];
         const numLinkSpheres = 7;
-        const projectLinks = [
-            { id: 1, url: "#", name: "About" },
-            { id: 2, url: "#", name: "BetMonitor" },
-            { id: 3, url: "#", name: "BetCalculator" },
-            { id: 4, url: "#", name: "PlaysTV Scraper" },
-            { id: 5, url: "#", name: "AudioSwitcher" },
-            { id: 6, url: "#", name: "BackgroundChecker" },
-            { id: 7, url: "#", name: "RecipeApp" },
-        ];
 
         for (let i = 0; i < numLinkSpheres; i++) {
             const size = sizes[Math.floor(Math.random() * sizes.length)];
 
-            const linkSphereGeometry = new THREE.CircleGeometry(size, 9);
+            const linkSphereGeometry = new THREE.CircleGeometry(size, 10);
             const linkSphereMaterial = new THREE.MeshBasicMaterial({ color: colors[i] });
             const linkSphere = new THREE.Mesh(linkSphereGeometry, linkSphereMaterial);
 
