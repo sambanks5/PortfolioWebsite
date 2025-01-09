@@ -191,7 +191,7 @@ const GravityBackground = ({ setSelectedProject, toggleGravity, setHoveredLink, 
             mouse.y = -((event.clientY - rect.top) / rect.height) * 2 + 1;
             raycaster.setFromCamera(mouse, camera);
             const intersects = raycaster.intersectObjects(linkSpheres);
-
+    
             if (intersects.length > 0) {
                 const intersectedObject = intersects[0].object;
                 if (hoveredObjectRef.current !== intersectedObject) {
@@ -229,13 +229,14 @@ const GravityBackground = ({ setSelectedProject, toggleGravity, setHoveredLink, 
                 }
             }
         };
+    
         const onClick = (event) => {
             const rect = renderer.domElement.getBoundingClientRect();
             mouse.x = ((event.clientX - rect.left) / rect.width) * 2 - 1;
             mouse.y = -((event.clientY - rect.top) / rect.height) * 2 + 1;
             raycaster.setFromCamera(mouse, camera);
             const intersects = raycaster.intersectObjects(linkSpheres);
-        
+    
             if (intersects.length > 0) {
                 const intersectedObject = intersects[0].object;
                 if (intersectedObject.userData.toggleGravity) {
@@ -251,6 +252,7 @@ const GravityBackground = ({ setSelectedProject, toggleGravity, setHoveredLink, 
         window.addEventListener("click", onClick);
 
         const animate = () => {
+            if (!mountRef.current) return; // Exit if the component is unmounted
             requestAnimationFrame(animate);
             world.Step(1 / 60, 10, 10);
             spheres.forEach((sphere) => {
@@ -265,18 +267,19 @@ const GravityBackground = ({ setSelectedProject, toggleGravity, setHoveredLink, 
                 const angle = linkSphere.body.GetAngle();
                 linkSphere.rotation.set(0, 0, angle);
             });
-
+    
             if (hoveredObjectRef.current) {
                 const pos = hoveredObjectRef.current.position;
                 setTooltipPosition({ x: pos.x + window.innerWidth / 2, y: -pos.y + window.innerHeight / 2 });
             }
-
+    
             renderer.render(scene, camera);
         };
-
+    
         animate();
 
         return () => {
+            cancelAnimationFrame(animate);
             window.removeEventListener("mousemove", onMouseMove);
             window.removeEventListener("click", onClick);
             mount.removeChild(renderer.domElement);

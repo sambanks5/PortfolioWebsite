@@ -1,29 +1,22 @@
-import React, { useState, useEffect, useRef, useCallback } from "react";
+// filepath: /c:/Users/Sam/Documents/GitHub/PortfolioWebsite/src/App.jsx
+import React, { useState, useRef, useCallback } from "react";
+import { useMediaQuery } from "@mui/material";
 import GravityBackground from "./components/GravityBackground.jsx";
-import LinkDisplay from "./components/TitleText.jsx";
+import MainContainer from "./components/MainContainer.jsx";
+import MenuBar from "./components/MenuBar.jsx";
 import { Container, Fade, Box, IconButton, Typography } from "@mui/material";
 import GitHubIcon from '@mui/icons-material/GitHub';
 import LinkedInIcon from '@mui/icons-material/LinkedIn';
 import Box2D from "box2dweb";
-import projects from "./projects.json"; // Import the JSON file
+import projects from "./projects.json";
 
 function App() {
     const [selectedProjectId, setSelectedProjectId] = useState(null);
     const [hoveredLink, setHoveredLink] = useState(null);
     const worldRef = useRef(null);
 
-    // Output the selected project ID for debugging
-    useEffect(() => {
-        console.log("Selected Project ID:", selectedProjectId);
-    }, [selectedProjectId]);
+    const isMobile = useMediaQuery('(max-width:650px)');
 
-    // Output the hovered link ID for debugging
-    useEffect(() => {
-        if (hoveredLink !== null) {
-            console.log("Selected hovered ID in App:", hoveredLink);
-        }
-    }, [hoveredLink]);
-    
     const handleSetHoveredLink = useCallback((linkId) => {
         setHoveredLink(linkId);
     }, []);
@@ -70,8 +63,7 @@ function App() {
 
     const handleClick = useCallback((projectId) => {
         setSelectedProjectId(projectId);
-        if (projectId === null) {
-            // Get the current gravity direction
+        if (projectId === null && worldRef.current) {
             const currentGravity = worldRef.current.GetGravity();
             let currentDirection;
             if (currentGravity.y < 0) {
@@ -84,7 +76,6 @@ function App() {
                 currentDirection = 'W';
             }
 
-            // Set gravity to a random direction excluding the current one
             const directions = ['N', 'S', 'E', 'W'].filter(dir => dir !== currentDirection);
             const randomDirection = directions[Math.floor(Math.random() * directions.length)];
             if (randomDirection !== currentDirection) {
@@ -95,21 +86,29 @@ function App() {
         }
     }, [toggleGravity]);
 
-
     return (
         <Fade in={true} timeout={500}>
             <Container maxWidth="True">
-                <Box className="nameContact" sx={{ position: "absolute", top: 5, left: 15, color: "Black", display: "flex", alignItems: "center", gap: 1, opacity: 0.6, transition: "opacity 0.5s", '&:hover': {opacity: 1}}} >
-                    <Typography variant="h1">Sam Banks</Typography>
-                    <IconButton href="https://github.com/sambanks5" target="_blank" rel="noopener noreferrer">
-                        <GitHubIcon sx={{ color: "#000000", fontSize: 25 }} />
-                    </IconButton>
-                    <IconButton href="https://www.linkedin.com/in/sam-banks-524161161/" target="_blank" rel="noopener noreferrer">
-                        <LinkedInIcon sx={{ color: "#000000", fontSize: 25 }} />
-                    </IconButton>
-                </Box>
-                <GravityBackground setSelectedProject={handleClick} toggleGravity={toggleGravity} setHoveredLink={handleSetHoveredLink} worldRef={worldRef} hoveredLink={hoveredLink} />
-                <LinkDisplay setSelectedProject={handleClick} hoveredLink={hoveredLink} setHoveredLink={setHoveredLink} project={selectedProject} />
+                {isMobile ? (
+                    <>
+                        <MenuBar setSelectedProject={handleClick}/>
+                        <MainContainer setSelectedProject={handleClick} hoveredLink={hoveredLink} setHoveredLink={setHoveredLink} project={selectedProject} isMobile={isMobile} />
+                    </>
+                ) : (
+                    <>
+                        <Box className="nameContact" sx={{ position: "absolute", top: 5, left: 15, color: "Black", display: "flex", alignItems: "center", gap: 1, opacity: 0.6, transition: "opacity 0.5s", '&:hover': {opacity: 1}}} >
+                            <Typography variant="h1">Sam Banks</Typography>
+                            <IconButton href="https://github.com/sambanks5" target="_blank" rel="noopener noreferrer">
+                                <GitHubIcon sx={{ color: "#000000", fontSize: 25 }} />
+                            </IconButton>
+                            <IconButton href="https://www.linkedin.com/in/sam-banks-524161161/" target="_blank" rel="noopener noreferrer">
+                                <LinkedInIcon sx={{ color: "#000000", fontSize: 25 }} />
+                            </IconButton>
+                        </Box>
+                        <GravityBackground setSelectedProject={handleClick} toggleGravity={toggleGravity} setHoveredLink={handleSetHoveredLink} worldRef={worldRef} hoveredLink={hoveredLink} />
+                        <MainContainer setSelectedProject={handleClick} hoveredLink={hoveredLink} setHoveredLink={setHoveredLink} project={selectedProject} isMobile={isMobile} />
+                    </>
+                )}
             </Container>
         </Fade>
     );

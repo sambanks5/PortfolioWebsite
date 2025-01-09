@@ -2,48 +2,48 @@
     {
         "id": 2,
         "name": "BetMonitor",
-        "header": "Custom Software for a Gambling Operator",
-        "description": "A tool built for office staff containing a bet feed, live betting pattern analysis, daily/monthly reporting and various QOL utilities for daily tasks.\n\nIt now performs a vital role in the company for in-house traders, giving them quick information and assistance at a glance.\n\nUses Pipedrive, Google and internal API's for up to date client & compliance information, as well as live news feeds for sports events.",
+        "header": "Custom Reporting Software for a Gambling Operator",
+        "description": "A tool designed for office staff to streamline daily tasks through live betting pattern analysis, reporting tools, and QOL utilities.\n\n- Features a live bet feed, daily/monthly reporting, and utility tools for quick decision-making.\n- Integrates Pipedrive, Google APIs, and internal systems for up-to-date client and compliance data.\n- Provides live sports event updates via news feeds.\n- Plays a critical role in assisting in-house traders with real-time information.",
         "languages": ["Python", "SQL", "Tkinter"],
         "github": "https://github.com/sambanks5/BetMonitor"
     },
     {
         "id": 3,
         "name": "BetCalculator",
-        "header": "React frontend for Betcruncher.js by Catena-Media.",
-        "description": "Working for a gambling operator, online bet calculators were regularly used work out potential returns, check payouts are correct & break down the workings of a wager for clients in customer support situations.\n\nBetCalculator is a React frontend using MUI components for Betcruncher.js library by Catena-Media.\n\nThe tool is used by the company for quick calculations and as a learning tool for new staff.",       
+        "header": "Frontend for Betcruncher.js by Catena-Media",
+        "description": "A calculator tool for calculating bet outcomes, improving customer support and aiding in staff training.\n\n- Built with React and MUI to interface with the Betcruncher.js library.\n- Assists in quickly checking potential returns, verifying payouts, and explaining wager breakdowns.\n- Used both as a utility for staff and a learning tool for new employees.",
         "languages": ["JavaScript", "React", "MUI"],
         "github": "https://github.com/sambanks5/BetCalculator"
     },
     {
         "id": 4,
         "name": "PlaysTVScraper",
-        "header": "Web Scraper for Plays.tv using Wayback Machine",
-        "description": "PlaysTV, a clip-sharing site for PC gaming, shut down in 2019, causing all its content to be lost. This included 195 clips uploaded by my friends and me, some of which were only accessible through the Internet Archive's Wayback Machine.\n\nUsing Selenium and BeautifulSoup, I successfully scraped and retrieved most of these clips.",
+        "header": "Web Scraper for Plays.tv Using Wayback Machine",
+        "description": "A project to recover lost gaming clips from PlaysTV, a clip-sharing site that shut down in 2019.\n\n- Scraped and retrieved 195 uploaded clips using Selenium and BeautifulSoup.\n- Accessed archived content available through the Internet Archive's Wayback Machine.\n- Recovered personal and friends' video memories for preservation.",
         "languages": ["Python", "BeautifulSoup", "Selenium"],
         "github": "https://github.com/sambanks5/PlaysTvScraper"
     },
     {
         "id": 5,
         "name": "AudioSwitcher",
-        "header": "Tool to switch between two audio devices.",
-        "description": "Simple script to capture enabled audio output devices and switch to the next one in the list.\n\nTo use instead of going into Windows sound settings to switch from headphones to speakers or vice versa, and built to be keybinded.",
+        "header": "Utility for Switching Audio Devices",
+        "description": "A lightweight script for quickly toggling between audio output devices without navigating Windows settings.\n\n- Lists available audio output devices and switches to the next one.\n- Designed for convenience, enabling keybinding for fast access.",
         "languages": ["Python", "NirCmd"],
         "github": "https://github.com/sambanks5/AudioSwitcher"
     },
     {
         "id": 6,
         "name": "BackgroundChecker",
-        "header": "Bot to prevent changing of background",
-        "description": "A fun background service to prevent housemates changing the desktop wallpaper on a shared PC.\n\nIf background gets changed, it is reset to default, sends a text notification, and Rick Astley's No.1 hit opens on full volume.",
+        "header": "Desktop Background Restoration Bot",
+        "description": "Background service to maintain a default desktop wallpaper and prevent unauthorized changes...\n\n- Monitors desktop wallpaper changes and resets to the default image if altered.\n- Sends a text notification upon change detection.\n- Opens \"Never Gonna Give You Up\" at full volume as a deterrent.",
         "languages": ["Python"],
         "github": "https://github.com/sambanks5/backgroundChecker"
     },
     {
         "id": 7,
         "name": "RecipeApp",
-        "header": "Colaborative recipe sharing app",
-        "description": "An in-progress recipe sharing app using React and C#.\n\nBuilt with the ambition to have an alternative to the current line up of bloated recipe websites.\nUsers can add, edit and delete recipes, as well as like and comment on others.\n\nBuilt as a learning project.",
+        "header": "Collaborative Recipe Sharing Application",
+        "description": "An ongoing project to create a modern, lightweight alternative to recipe websites.\n\n- Allows users to add, edit, and delete recipes.\n- To include features for liking and commenting on shared recipes.\n- Built as a learning project to enhance skills in React and C#.",
         "languages": ["C#", "React", "MUI"],
         "github": "https://github.com/AlecMoore/RecipeWebsite-WIP-"
     }

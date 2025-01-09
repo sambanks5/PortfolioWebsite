@@ -15,6 +15,7 @@
     "box2dweb": "^2.1.0-b",
     "gsap": "^3.12.5",
     "mui": "^0.0.1",
+    "polished": "^4.3.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-icons": "^5.3.0",
