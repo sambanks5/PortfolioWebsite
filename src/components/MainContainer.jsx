@@ -72,6 +72,7 @@ const MainContainer = ({ setSelectedProject, hoveredLink, setHoveredLink, projec
         height: height,
         minHeight: "320px",
         overflow: "hidden",
+        boxShadow: "0 0 10px 0 rgba(0, 0, 0, 0.2)",
       }}
     >
       <Fade in={fade} timeout={1000}>
